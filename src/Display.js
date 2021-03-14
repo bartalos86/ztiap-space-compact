@@ -1,6 +1,5 @@
 import { Background } from "./Models/Background.js";
-import { Spaceship } from "./Models/Spaceship.js";
-import { Sprite } from "./Models/Sprite.js";
+
 
 class Display {
     constructor(canvasName) {
