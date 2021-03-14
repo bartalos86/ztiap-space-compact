@@ -1,5 +1,5 @@
 export class Sprite{
-    constructor(imagePath, width, height) {
+    constructor(imagePath, width, height, animation = null) {
         this.imagePath = imagePath;
         this.width = width;
         this.height = height;
@@ -7,8 +7,14 @@ export class Sprite{
         let img = new Image(this.width, this.height);
         img.src = this.imagePath;
         this.drawable = img;
+
+        this.animation = animation;
        
     }
+
+    getAnimation() { return this.animation }
+
+    
 
     setRotation(rot) {
         this.rotation = rot;

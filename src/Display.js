@@ -6,7 +6,7 @@ class Display {
     constructor(canvasName) {
         this.canvas = document.getElementById(canvasName);
         this.ctx = this.canvas.getContext("2d");
-        
+
         this.init();
         window.onresize = () => this.init();
 
@@ -36,8 +36,18 @@ class Display {
         } else if (gameObj.position.getY() < 0) {
             gameObj.position.setY(this.height - gameObj.height);
         }
-        this.ctx.drawImage(await gameObj.getDrawable(), gameObj.position.getX(), gameObj.position.getY(),
-            gameObj.width, gameObj.height);
+        //TODO: Separate this
+        let animation = gameObj.getAnimation();
+
+        if (animation) {
+            this.ctx.drawImage(await gameObj.getDrawable(), animation.getNextAnimationFramePos().start, 0, animation.getFrameWidth(), animation.getFrameHeight(),
+                gameObj.position.getX(), gameObj.position.getY(),
+                gameObj.width, gameObj.height);
+        } else {
+            this.ctx.drawImage(await gameObj.getDrawable(), gameObj.position.getX(), gameObj.position.getY(),
+                gameObj.width, gameObj.height);
+        }
+
         this.printText("Space compact", this.width / 2, 50);
 
 
