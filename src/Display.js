@@ -22,7 +22,7 @@ class Display {
     }
 
     async drawSprite(gameObj, delta) {
-        //this.ctx.clearRect(0, 0, this.width, this.height);
+       
 
         if (gameObj.position.getX() + gameObj.width > this.width) {
             gameObj.position.setX(0);
@@ -64,6 +64,10 @@ class Display {
             }
         }
 
+    }
+
+    clear() {
+         this.ctx.clearRect(0, 0, this.width, this.height);
     }
 
     printText(text, posX, posY) {

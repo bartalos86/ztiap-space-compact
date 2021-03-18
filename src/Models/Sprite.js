@@ -26,11 +26,11 @@ export class Sprite{
     }
 
     getDrawable() {
-        if (!this.spriteLoaded)
+       /* if (!this.spriteLoaded)
             return new Promise((resolve) => {
-                this.drawable.addEventListener('load', () => { resolve(this.drawable); this.spriteLoaded = true; })
+                this.drawable.addEventListener('load', () => {this.spriteLoaded = true; resolve(this.drawable);  })
             });
-        else
+        else*/
             return new Promise((resolve) => resolve(this.drawable));
 
 
