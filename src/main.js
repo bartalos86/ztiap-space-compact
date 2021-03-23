@@ -1,15 +1,19 @@
+import { MainMenu } from "./Screens/MainMenu.js";
+import { Controller } from "./Controller.js";
 import { Display } from "./Display.js";
-import { Enemy } from "./Models/Enemy.js";
-import { Spaceship } from "./Models/Spaceship.js";
+import { StartEnemy, DefaultEnemy, StrongEnemy } from "./Models/Enemy.js";
+import { FireSpaceship, SpeedSpaceship } from "./Models/Spaceship.js";
 
 window.onload = () => {
     let display = new Display("canvas");
 
-    let spaceship = new Spaceship();
+    let spaceship = new FireSpaceship();
     spaceship.position.setPosition(100, 100);
-    let speed = 10;
+    
+    let enemies = [new StartEnemy(), new StartEnemy(), new DefaultEnemy(), new StrongEnemy()];
 
-    let enemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy()];
+    let controller = new Controller(display.getCanvas());
+   
 
     window.onkeydown = (event) => {
 
@@ -17,38 +21,52 @@ window.onload = () => {
         let key = event.key;
         switch (key) {
 
-            case "w": spaceship.position.setY(spaceship.position.getY() - speed);
+            case "w": spaceship.move("up", 1);
                 break;
-            case "s": spaceship.position.setY(spaceship.position.getY() + speed);
+            case "s": spaceship.move("down", 1);
                 break;
-            case "a": spaceship.position.setX(spaceship.position.getX() - speed);
+            case "a": spaceship.move("backward", 1);
                 break;
-            case "d": spaceship.position.setX(spaceship.position.getX() + speed);
+            case "d": spaceship.move("forward", 1);
                 break;
 
         }
 
 
     }
+    let scene = "menu";
+    function setScene(localScene) {
+        scene = localScene;
+    }
+
+    let mainMenu = new MainMenu({setScene},controller);
+    controller.addSubject(mainMenu);
 
     async function loop(timestamp) {
         var delta = timestamp - lastRender;
 
         if (delta == 'undefined')
             delta = 1;
-      
-        
            
-        
-          await display.renderBackground(-timestamp / 5);
+      
+        //display.clear();
+        if (scene == "menu") {
+        await display.drawScreen(mainMenu);
+              //console.log(scene);
+        }
+        else {
+            await display.renderBackground(-timestamp / 5);
 
-        for (let i = 0; i < enemies.length; i++) {
-            enemies[i].move(delta);
-           await display.drawSprite(enemies[i], delta);
+            for (let i = 0; i < enemies.length; i++) {
+                enemies[i].move(delta);
+                await display.drawSprite(enemies[i]);
+            }
+
+            await display.drawSprite(spaceship, delta);
         }
 
-         await display.drawSprite(spaceship, delta);
-        
+
+
         //console.log(delta);
 
 

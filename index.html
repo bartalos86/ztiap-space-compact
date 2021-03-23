@@ -16,32 +16,34 @@
             margin: 0;
             padding: 0;
             font-family: "pixel" !important;
+            /* background-image: url("src/assets/background/bg.svg"); */
+            background-size: 100px;
+            background: rgb(0, 44, 126);
+            
         }
 
         canvas {
             image-rendering: pixelated;
-             /* image-rendering: optimizeSpeed; */
-            /* image-rendering: crisp-edges; */
-          /* image-rendering: -moz-crisp-edges;
-            image-rendering: -o-crisp-edges;
-            image-rendering: -webkit-optimize-contrast;
-            -ms-interpolation-mode: nearest-neighbor;
-            margin: 0;
-            padding: 0;
-            border: solid black 1px;
-            font-family: "pixel";*/
-
+            margin: auto;
+            position: absolute;
+            left: 50%;
+            top: 10%;
+            transform: translateX(-50%);
+            /* border: solid rgb(0, 44, 126) 7px; */
+            border-radius: 10px;
+            box-shadow: rgba(0, 0, 0, 0.315) 10px 10px 10px;
         }
 
         img {
             display: none;
         }
     </style>
+
+     <script type="module"src="/src/main.js"defer></script>
 </head>
 
 <body>
     <canvas id="canvas"></canvas>
-    <script type="module" src="/src/main.js" defer></script>
 </body>
 
 </html>

@@ -1,7 +1,7 @@
 export class Animation2D{
 
-    constructor(spritesheetPath, spWidth, spHeight, cols, animationSpeed = 1) {
-        this.spritesheetPath = spritesheetPath;
+    constructor(spWidth, spHeight, cols, animationSpeed = 1) {
+        //this.spritesheetPath = spritesheetPath;
         this.spWidth = spWidth;
         this.spHeight = spHeight;
         this.cols = cols;
@@ -21,7 +21,7 @@ export class Animation2D{
     }
 
     getFrameWidth() {
-        return this.spWidth;
+        return this.spWidth-1;
     }
 
     getFrameHeight() {
