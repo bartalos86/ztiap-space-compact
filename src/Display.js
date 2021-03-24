@@ -22,7 +22,7 @@ class Display {
 
     relativeToAbsoulePosText(relativeX, text) {
         let textwidth = this.ctx.measureText(text).width;
-       
+
         switch (relativeX) {
             case "left":
                 return 0;
@@ -56,6 +56,9 @@ class Display {
             if (widget.type == "text")
                 await this.drawTextWidget(widget);
 
+            if (widget.type == "image")
+                await this.drawImageWidget(widget);
+
         }
 
     }
@@ -66,8 +69,26 @@ class Display {
         if (typeof (widget.posX) == 'string') {
             widget.setX(this.relativeToAbsoulePosText(widget.posX, widget.text));
         }
-       
+
         this.printText(widget.text, widget.posX, widget.posY);
+    }
+
+    async drawImageWidget(widget) {
+        if (typeof (widget.posX) == 'string') {
+            widget.setX(this.relativeToAbsoulePos(widget.posX, widget.width));
+        }
+
+        if (widget.getRotation() % 360 != 0) {
+            this.ctx.save();
+            this.ctx.translate(widget.posX + widget.width / 2, widget.posY + widget.height / 2);
+            this.ctx.rotate(widget.getRotation()*Math.PI/ 360);
+        }
+
+        this.ctx.drawImage(widget.getDrawable(), widget.posX, widget.posY, widget.width, widget.height);
+
+        if (widget.getRotation() % 360 != 0) {
+            this.ctx.restore();
+        }
     }
 
     async drawButton(widget) {
@@ -85,7 +106,9 @@ class Display {
 
         this.ctx.drawImage(widget.getDrawable(), widget.posX, widget.posY, widget.width, widget.height);
         this.ctx.font = `${widget.getText().fontSize} ${widget.getText().fontFamily}`;
-        this.printText(widget.getText().text, widget.posX + widget.width / 2, widget.posY + widget.height / 2 + 10);
+        this.printText(widget.getText().text, widget.getText().posX + widget.posX + widget.width / 2, widget.getText().posY + widget.posY + widget.height / 2 + 10);
+
+        this.ctx.fillStyle = "white";
 
     }
 
@@ -115,17 +138,18 @@ class Display {
                 gameObj.width, gameObj.height);
         }
 
+        this.ctx.font = "60pt pixel";
         this.printText("Space compact", this.width / 2, 80);
 
 
     }
 
-    async renderBackground(offsetX, background = "/src/assets/background/bg3.svg") {
+    async renderBackground(offsetX, background = "/src/assets/background/bg.svg") {
         //dddthis.ctx.clearRect(0, 0, this.width, this.height);
         offsetX = offsetX % this.width;
         let size = 200;
         let bg = new Background(background, this.width, this.height);
-        for (let i = 0; i < this.width *2; i += size) {
+        for (let i = 0; i < this.width * 2; i += size) {
             for (let j = 0; j < this.height; j += size) {
                 this.ctx.drawImage(await bg.getDrawable(), bg.position.getX() + i + offsetX, bg.position.getY() + j,
                     size, size);

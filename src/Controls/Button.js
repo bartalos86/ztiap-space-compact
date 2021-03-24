@@ -6,7 +6,11 @@ export class Button extends Widget {
     constructor(posX, posY, width, height, background, text) {
         super(posX, posY, width, height, "button");
         this.background = background;
-        this.text = new Text(text,posX, posY, "30px");
+
+        if (typeof (text) == 'string')
+            this.text = new Text(text, 0, 0, "30px");
+        else
+            this.text = text;
 
         let img = new Image(this.width, this.height);
         img.src = this.background;
