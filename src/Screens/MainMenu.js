@@ -12,7 +12,7 @@ export class MainMenu extends BaseScreen {
         let title = new Text("Space compact", "center", 350, "60pt");
 
         let planet = new ImageWidget("/src/assets/decors/earth.png", "center", 70, 200, 200);
-        let spaceship = new ImageWidget("/src/assets/sprites/spaceship2.png", 700, 120, 120, 120, 90);
+        let spaceship = new ImageWidget("/src/assets/sprites/spaceship2.png", 670, 120, 120, 120, 0);
 
         let playBtn = new Button("center", 400, 250, 75, "/src/assets/ui/button.png", "Play game");
 
