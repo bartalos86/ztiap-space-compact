@@ -1,12 +1,13 @@
 
 import { Observer } from "../BaseTypes/Observer.js";
 export class BaseScreen extends Observer{
-    constructor(title, background = "") {
+    constructor(sceneId,title, background = "") {
         super();
         this.title = title;
         this.background = background;
         this.widgets = [];
         this.isActive = false;
+        this.sceneId = sceneId;
     }
 
     activate() { this.isActive = true }
@@ -18,9 +19,16 @@ export class BaseScreen extends Observer{
 
     removeWidget(widget) {
         for (let i = 0; i < this.widgets.length; i++){
-            if (this.widgets[i] == widget)
+            if (this.widgets[i] == widget) {
                 this.widgets.splice(i, 1);
+                break;
+            }
+            
         }
+    }
+
+    getSceneId() {
+        return this.sceneId;
     }
 
     getWidgets() {
@@ -43,6 +51,9 @@ export class BaseScreen extends Observer{
     //when receives notification
     notify(event) {
 
+        if (!this.isActive)
+        return;
+
         for (let i = 0; i < this.subjects.length; i++) {
             let subject = this.subjects[i];
 
@@ -57,7 +68,7 @@ export class BaseScreen extends Observer{
 
             }
             if (event.type == 'click') {
-                console.log(`postion: ${event.data.x} rect: ${subject.posX} ${subject.posX + subject.width}`);
+               // console.log(`postion: ${event.data.x} rect: ${subject.posX} ${subject.posX + subject.width}`);
 
 
                 if (event.data.x > subject.posX && event.data.x < subject.posX + subject.width &&

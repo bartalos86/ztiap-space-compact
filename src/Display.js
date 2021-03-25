@@ -1,3 +1,4 @@
+import { PositionHelper } from "./PosiotionHelper.js";
 import { Background } from "./Models/Background.js";
 
 
@@ -9,27 +10,10 @@ class Display {
         this.init();
         window.onresize = () => this.init();
 
+
     }
 
-    relativeToAbsoulePos(relativeX, width) {
-        switch (relativeX) {
-            case "left":
-                return 0;
-            case "right": return this.width;
-            case "center": return this.width / 2 - width / 2;
-        }
-    }
 
-    relativeToAbsoulePosText(relativeX, text) {
-        let textwidth = this.ctx.measureText(text).width;
-
-        switch (relativeX) {
-            case "left":
-                return 0;
-            case "right": return this.width;
-            case "center": return this.width / 2;
-        }
-    }
 
     init() {
         this.canvas.height = 720;
@@ -39,9 +23,14 @@ class Display {
         this.ctx.imageSmoothingEnabled = false;
         this.ctx.fillStyle = "white";
         this.ctx.font = "60pt pixel";
+
+        this.positionHelper = new PositionHelper(this.canvas);
+
     }
 
     async drawScreen(screen) {
+
+        //this.clear();
 
         await this.renderBackground(0, screen.background);
 
@@ -50,52 +39,124 @@ class Display {
         for (let i = 0; i < widgets.length; i++) {
             let widget = widgets[i];
 
-            if (widget.type == "button")
-                await this.drawButton(widget);
-
-            if (widget.type == "text")
-                await this.drawTextWidget(widget);
-
-            if (widget.type == "image")
-                await this.drawImageWidget(widget);
+            await this.renderWidget(widget);
 
         }
 
+    }
+
+    async renderWidget(widget) {
+        if (widget.type == "button")
+            await this.drawButton(widget);
+
+        if (widget.type == "text")
+            await this.drawTextWidget(widget);
+
+        if (widget.type == "image")
+            await this.drawImageWidget(widget);
     }
 
     async drawTextWidget(widget) {
         this.ctx.font = `${widget.fontSize} ${widget.fontFamily}`;
+        let parent = widget.getParent();
 
         if (typeof (widget.posX) == 'string') {
-            widget.setX(this.relativeToAbsoulePosText(widget.posX, widget.text));
+
+            //Its a text component
+            if (!parent)
+                widget.setX(this.positionHelper.relativeToAbsoulePosText(widget.posX, widget.text));
+
+            //It has a parent
+            if (parent) {
+                //let textWidth = this.ctx.measureText(widget.text).width;
+                widget.setX(this.positionHelper.relativeToParentPosTextX(parent, widget));
+            }
         }
 
-        this.printText(widget.text, widget.posX, widget.posY);
+        if (typeof (widget.posY) == 'string') {
+
+            //It has a parent
+            if (parent) {
+
+                widget.setY(this.positionHelper.relativeToParentPosTextY(parent, widget));
+            }
+        }
+
+
+        if (parent) {
+            let textWidth = this.ctx.measureText(widget.text).width;
+            this.printText(widget.text, parent.posX + widget.posX, parent.posY + widget.posY);
+
+        }
+        else {
+            this.printText(widget.text, widget.posX, widget.posY);
+        }
     }
 
     async drawImageWidget(widget) {
+
+        let parent = widget.getParent();
+
         if (typeof (widget.posX) == 'string') {
-            widget.setX(this.relativeToAbsoulePos(widget.posX, widget.width));
+            if (!parent)
+                widget.setX(this.positionHelper.relativeToAbsoulePos(widget.posX, widget.width));
+
+            if (parent) {
+                widget.setX(this.positionHelper.relativeToParentPosX(parent, widget));
+            }
+        }
+
+        if (typeof (widget.posY) == 'string') {
+
+            if (!parent)
+                widget.setY(this.positionHelper.relativeToAbsoulePos(widget.posX, widget.width));
+
+            if (parent) {
+                widget.setY(this.positionHelper.relativeToParentPosY(parent, widget));
+            }
         }
 
         if (widget.getRotation() % 360 != 0) {
             this.ctx.save();
-            this.ctx.translate(widget.posX + widget.width / 2, widget.posY + widget.height / 2);
-            this.ctx.rotate(widget.getRotation()*Math.PI/ 360);
+            //this.ctx.translate(widget.posX + widget.width / 2, widget.posY + widget.height / 2);
+            this.ctx.rotate(widget.getRotation() * Math.PI / 360);
         }
 
-        this.ctx.drawImage(widget.getDrawable(), widget.posX, widget.posY, widget.width, widget.height);
+        let posX, posY;
+        if (parent) {
+            posX = parent.posX + widget.posX;
+            posY = parent.posY + widget.posY;
+        } else {
+            posX = widget.posX;
+            posY = widget.posY;
+        }
+
+        if (widget.isAnimated()) {
+            let animation = widget.getAnimation();
+
+            await this.renderAnimation(widget, animation, { x: posX, y: posY }, { width: widget.width, height: widget.height });
+        } else {
+            this.ctx.drawImage(widget.getDrawable(),posX, posY, widget.width, widget.height);
+            
+        }
+
+       
 
         if (widget.getRotation() % 360 != 0) {
             this.ctx.restore();
         }
     }
 
+    async renderAnimation(IDrawable, animation, position, size) {
+        this.ctx.drawImage(await IDrawable.getDrawable(), animation.getNextAnimationFramePos().start, 0, animation.getFrameWidth(), animation.getFrameHeight(),
+            position.x, position.y,
+            size.width, size.height);
+    }
+
     async drawButton(widget) {
 
-
         if (typeof (widget.posX) == 'string') {
-            widget.setX(this.relativeToAbsoulePos(widget.posX, widget.width));
+            widget.setX(this.positionHelper.relativeToAbsoulePos(widget.posX, widget.width));
         }
 
         if (widget.getMouseOver()) {
@@ -104,13 +165,18 @@ class Display {
             this.ctx.fillStyle = "white";
         }
 
-        this.ctx.drawImage(widget.getDrawable(), widget.posX, widget.posY, widget.width, widget.height);
-        this.ctx.font = `${widget.getText().fontSize} ${widget.getText().fontFamily}`;
-        this.printText(widget.getText().text, widget.getText().posX + widget.posX + widget.width / 2, widget.getText().posY + widget.posY + widget.height / 2 + 10);
+        this.ctx.drawImage(widget.getBackground(), widget.posX, widget.posY, widget.width, widget.height);
+
+        if (widget.getContent())
+            await this.renderWidget(widget.getContent());
+        //this.ctx.font = `${widget.getText().fontSize} ${widget.getText().fontFamily}`;
+        //this.printText(widget.getContent().text, widget.getContent().posX + widget.posX + widget.width / 2, widget.getContent().posY + widget.posY + widget.height / 2 + 10);
 
         this.ctx.fillStyle = "white";
 
     }
+
+
 
     async drawSprite(gameObj) {
 
@@ -130,15 +196,14 @@ class Display {
         let animation = gameObj.getAnimation();
 
         if (animation) {
-            this.ctx.drawImage(await gameObj.getDrawable(), animation.getNextAnimationFramePos().start, 0, animation.getFrameWidth(), animation.getFrameHeight(),
-                gameObj.position.getX(), gameObj.position.getY(),
-                gameObj.width, gameObj.height);
+            await this.renderAnimation(gameObj, animation, { x: gameObj.position.getX(), y: gameObj.position.getY() },
+                { width: gameObj.width, height: gameObj.height });
         } else {
             this.ctx.drawImage(await gameObj.getDrawable(), gameObj.position.getX(), gameObj.position.getY(),
                 gameObj.width, gameObj.height);
         }
 
-        this.ctx.font = "60pt pixel";
+        this.ctx.font = "60pt arcade";
         this.printText("Space compact", this.width / 2, 80);
 
 

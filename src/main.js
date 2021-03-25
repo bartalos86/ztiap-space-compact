@@ -4,6 +4,9 @@ import { Display } from "./Display.js";
 import { StartEnemy, DefaultEnemy, StrongEnemy } from "./Models/Enemy.js";
 import { FireSpaceship, SpeedSpaceship } from "./Models/Spaceship.js";
 import { GameScreen } from "./Screens/GameScreen.js";
+import { ImageWidget } from "./Controls/Image.js";
+import { ToggleButton } from "./Controls/Button.js";
+import { SceneManager } from "./SceneManager.js";
 
 window.onload = () => {
     let display = new Display("canvas");
@@ -14,7 +17,6 @@ window.onload = () => {
     let enemies = [new StartEnemy(), new StartEnemy(), new DefaultEnemy(), new StrongEnemy()];
 
     let controller = new Controller(display.getCanvas());
-
 
     window.onkeydown = (event) => {
 
@@ -35,17 +37,40 @@ window.onload = () => {
 
 
     }
-    let scene = "menu";
+
+    let sceneManager = new SceneManager(controller);
+
+
+    /*let scene = "menu";
     function setScene(localScene) {
         scene = localScene;
         display.clear();
 
-    }
+        if (scene == "menu") {
+            gameScreen.deactivate();
+            mainMenu.activate();
+        } else if() {
+            mainMenu.deactivate();
+            gameScreen.activate();
+        }
 
-    let mainMenu = new MainMenu({ setScene }, controller);
+    }*/
+
+
+
+    /*let mainMenu = new MainMenu({ setScene }, controller);
+    
     let gameScreen = new GameScreen({ setScene });
+    gameScreen.addSubject(musicBtn);
+    gameScreen.addSubject(soundBtn);
+
+    gameScreen.addWidget(musicBtn);
+    gameScreen.addWidget(soundBtn);
+
     controller.addSubject(mainMenu);
-    controller.addSubject(gameScreen);
+    controller.addSubject(gameScreen);*/
+
+    //mainMenu.activate();
 
     async function loop(timestamp) {
         var delta = timestamp - lastRender;
@@ -54,19 +79,20 @@ window.onload = () => {
             delta = 1;
 
 
-        if (scene == "menu") {
-            gameScreen.deactivate();
-            mainMenu.activate();
-            await display.drawScreen(mainMenu);
-            //console.log(scene);
-        }
-        else {
 
-            mainMenu.deactivate();
-            gameScreen.activate();
+        //gameScreen.deactivate();
+
+        //display.clear();
+        
+
+        //console.log(scene);
+
+        if (sceneManager.getCurrentSceneId() == "game") {
+
+
             await display.renderBackground(-timestamp / 5);
 
-            await display.drawScreen(gameScreen);
+            //await display.drawScreen(gameScreen);
 
 
 
@@ -79,7 +105,9 @@ window.onload = () => {
         }
 
 
+        await display.drawScreen(sceneManager.getCurrentScene());
 
+        await display.drawScreen(sceneManager.getGlobalScene());
         //console.log(delta);
 
 

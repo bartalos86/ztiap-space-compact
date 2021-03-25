@@ -1,38 +1,66 @@
-import { Button } from "../Controls/Button.js";
+import { Button, TextButton, ToggleButton } from "../Controls/Button.js";
 import { BaseScreen } from "./BaseScreen.js";
 import { Text } from "../Controls/Text.js";
 
-import { ImageWidget } from "../Controls/Image.js";
+import { AnimatedImageWidget, ImageWidget } from "../Controls/Image.js";
+import { SpeedSpaceship } from "../Models/Spaceship.js";
+import { Vector2D } from "../BaseTypes/Vector.js";
+import { Animation2D } from "../BaseTypes/Animation.js";
 
 export class MainMenu extends BaseScreen {
 
-    constructor(game) {
-        super("Main menu", "/src/assets/background/bg.svg");
+    constructor(sceneManager) {
+        super("main-menu","Main menu", "/src/assets/background/bg3.svg");
 
-        let title = new Text("Space compact", "center", 350, "60pt");
+        let title = new Text("Space compact", "center", 320, "60pt","arcade");
+        let earthAnimation = new Animation2D(100, 100, 160, 0.25);
+        let planet = new AnimatedImageWidget("/src/assets/decors/earth-sprite-2.png", "center", 50, 180, 180, earthAnimation);
+        let shipAnimation = new Animation2D(32, 32, 5, 0.2);
+        let spaceship = new AnimatedImageWidget("/src/assets/sprites/spaceship-sprite.png", 600, 270, 100, 100,shipAnimation, -30);
+        let marsAnimation = new Animation2D(100, 100, 100, 0.2);
+        let mars = new AnimatedImageWidget("/src/assets/decors/mars-sprite-2.png", 910, 305, 50, 50,marsAnimation);
+        
 
-        let planet = new ImageWidget("/src/assets/decors/earth.png", "center", 70, 200, 200);
-        let spaceship = new ImageWidget("/src/assets/sprites/spaceship2.png", 670, 120, 120, 120, 0);
+        let playBtn = new TextButton("center", 380, 250, 75, "Play game");
 
-        let playBtn = new Button("center", 400, 250, 75, "/src/assets/ui/button.png", "Play game");
-
-        this.addSubject(playBtn);
 
         playBtn.addOnClick(() => {
-            game.setScene("play");
+            sceneManager.setScene("game");
         });
 
 
+        let spaceCenter = new TextButton("center", 480, 250, 75, "Space center");
+        let scoreBtn = new TextButton("center", 580, 250, 75, "Scoreboard");
 
-        let scoreBtn = new Button("center", 500, 250, 75, "/src/assets/ui/button.png", "Scoreboard");
+        let controlsTxt = new Text("controls","center","center","13px")
+        let controls = new TextButton(20, 660, 100, 40, controlsTxt);
+
+        controls.addOnClick(() => {
+            
+            sceneManager.setScene("controls");
+        });
+
+        let musicOn = new ImageWidget("/src/assets/ui/music-on.png", "center", "center", 30, 30);
+        let musicOff = new ImageWidget("/src/assets/ui/music-off.png", "center", "center", 30, 30);
+        let musicBtn = new ToggleButton(1170, 670, 40, 40, musicOn, musicOff);
+
+      /*  let soundOn = new ImageWidget("/src/assets/ui/sound-on.png", "center", "center", 30, 30);
+        let soundOff = new ImageWidget("/src/assets/ui/sound-off.png", "center", "center", 30, 30);
+        let soundBtn = new ToggleButton("right", 670, 40, 40, soundOn, soundOff);*/
+
+        this.addSubject(spaceCenter);
         this.addSubject(scoreBtn);
+        this.addSubject(playBtn);
+        this.addSubject(controls);
+        //this.addSubject(soundBtn);
 
-        this.widgets = [planet, spaceship, title, playBtn, scoreBtn];
+
+        this.widgets = [planet,spaceship, title,mars, playBtn,spaceCenter, scoreBtn, controls];
 
 
     }
 
-    notify(event) {
+   /* notify(event) {
 
         for (let i = 0; i < this.subjects.length; i++) {
             let subject = this.subjects[i];
@@ -48,7 +76,7 @@ export class MainMenu extends BaseScreen {
 
             }
             if (event.type == 'click') {
-                console.log(`postion: ${event.data.x} rect: ${subject.posX} ${subject.posX + subject.width}`);
+                //console.log(`postion: ${event.data.x} rect: ${subject.posX} ${subject.posX + subject.width}`);
 
 
                 if (event.data.x > subject.posX && event.data.x < subject.posX + subject.width &&
@@ -62,6 +90,6 @@ export class MainMenu extends BaseScreen {
 
 
 
-    }
+    }*/
 
 }
