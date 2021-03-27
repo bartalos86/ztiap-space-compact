@@ -54,67 +54,42 @@ class Display {
 
         if (widget.type == "image")
             await this.drawImageWidget(widget);
+        
+        if (widget.type == "progressbar") {
+            await this.drawProgressbar(widget);
+        }
     }
 
     async drawTextWidget(widget) {
         this.ctx.font = `${widget.fontSize} ${widget.fontFamily}`;
         let parent = widget.getParent();
+        let shadow = widget.getTextShadow();
 
-        if (typeof (widget.posX) == 'string') {
+        this.positionHelper.normalizeWidgetPositions(widget, parent);
 
-            //Its a text component
-            if (!parent)
-                widget.setX(this.positionHelper.relativeToAbsoulePosText(widget.posX, widget.text));
-
-            //It has a parent
-            if (parent) {
-                //let textWidth = this.ctx.measureText(widget.text).width;
-                widget.setX(this.positionHelper.relativeToParentPosTextX(parent, widget));
-            }
-        }
-
-        if (typeof (widget.posY) == 'string') {
-
-            //It has a parent
-            if (parent) {
-
-                widget.setY(this.positionHelper.relativeToParentPosTextY(parent, widget));
-            }
-        }
-
-
+        let posX, posY;
         if (parent) {
-            let textWidth = this.ctx.measureText(widget.text).width;
-            this.printText(widget.text, parent.posX + widget.posX, parent.posY + widget.posY);
+            posX = parent.posX + widget.posX;
+            posY = parent.posY + widget.posY;
+        } else {
+            posX = widget.posX;
+            posY = widget.posY;
+        }
 
+        if (shadow) {
+            this.printText(widget.text, posX + shadow.offsetX, posY + shadow.offsetY, shadow.color);
+            this.ctx.fillStyle = widget.color;
         }
-        else {
-            this.printText(widget.text, widget.posX, widget.posY);
-        }
+        
+        this.printText(widget.text, posX, posY);
+
     }
 
     async drawImageWidget(widget) {
 
         let parent = widget.getParent();
 
-        if (typeof (widget.posX) == 'string') {
-            if (!parent)
-                widget.setX(this.positionHelper.relativeToAbsoulePos(widget.posX, widget.width));
-
-            if (parent) {
-                widget.setX(this.positionHelper.relativeToParentPosX(parent, widget));
-            }
-        }
-
-        if (typeof (widget.posY) == 'string') {
-
-            if (!parent)
-                widget.setY(this.positionHelper.relativeToAbsoulePos(widget.posX, widget.width));
-
-            if (parent) {
-                widget.setY(this.positionHelper.relativeToParentPosY(parent, widget));
-            }
-        }
+        this.positionHelper.normalizeWidgetPositions(widget, parent);
 
         if (widget.getRotation() % 360 != 0) {
             this.ctx.save();
@@ -136,11 +111,11 @@ class Display {
 
             await this.renderAnimation(widget, animation, { x: posX, y: posY }, { width: widget.width, height: widget.height });
         } else {
-            this.ctx.drawImage(widget.getDrawable(),posX, posY, widget.width, widget.height);
-            
+            this.ctx.drawImage(widget.getDrawable(), posX, posY, widget.width, widget.height);
+
         }
 
-       
+
 
         if (widget.getRotation() % 360 != 0) {
             this.ctx.restore();
@@ -155,9 +130,7 @@ class Display {
 
     async drawButton(widget) {
 
-        if (typeof (widget.posX) == 'string') {
-            widget.setX(this.positionHelper.relativeToAbsoulePos(widget.posX, widget.width));
-        }
+        this.positionHelper.normalizeWidgetPositions(widget);
 
         if (widget.getMouseOver()) {
             this.ctx.fillStyle = "yellow";
@@ -173,6 +146,15 @@ class Display {
         //this.printText(widget.getContent().text, widget.getContent().posX + widget.posX + widget.width / 2, widget.getContent().posY + widget.posY + widget.height / 2 + 10);
 
         this.ctx.fillStyle = "white";
+
+    }
+
+    async drawProgressbar(widget) {
+        this.positionHelper.normalizeWidgetPositions(widget);
+       // console.log(widget.getProgressWidth());
+
+        this.ctx.drawImage(widget.getBackDrawable(), widget.posX, widget.posY, widget.width, widget.height);
+        this.ctx.drawImage(widget.getProgressDrawable(), widget.posX, widget.posY, widget.getProgressWidth(), widget.height);
 
     }
 
@@ -203,8 +185,8 @@ class Display {
                 gameObj.width, gameObj.height);
         }
 
-        this.ctx.font = "60pt arcade";
-        this.printText("Space compact", this.width / 2, 80);
+        /*this.ctx.font = "60pt arcade";
+        this.printText("Space compact", this.width / 2, 80);*/
 
 
     }
@@ -227,7 +209,11 @@ class Display {
         this.ctx.clearRect(0, 0, this.width, this.height);
     }
 
-    printText(text, posX, posY) {
+    printText(text, posX, posY, color = null) {
+
+        if (color != null)
+            this.ctx.fillStyle = color;
+
         let textwidth = this.ctx.measureText(text).width;
         this.ctx.fillText(text, posX - textwidth / 2, posY);
 

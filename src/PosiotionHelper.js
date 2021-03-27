@@ -7,8 +7,56 @@ export class PositionHelper {
         this.canvas = canvas;
     }
 
+    normalizeWidgetPositions(widget, parent = null) {
 
-    relativeToAbsoulePos(relativeX, width) {
+        if (widget.type == "text") {
+            if (typeof (widget.posX) == 'string') {
+
+                //Its a text component
+                if (!parent)
+                    widget.setX(this.relativeToAbsolutePosTextX(widget.posX, widget.text));
+    
+                //It has a parent
+                if (parent) {
+                    //let textWidth = this.ctx.measureText(widget.text).width;
+                    widget.setX(this.relativeToParentPosTextX(parent, widget));
+                }
+            }
+    
+            if (typeof (widget.posY) == 'string') {
+    
+                //It has a parent
+                if (parent) {
+    
+                    widget.setY(this.relativeToParentPosTextY(parent, widget));
+                }
+            }
+        } else {
+            
+        if (typeof (widget.posX) == 'string') {
+            if (!parent)
+                widget.setX(this.relativeToAbsolutePosX(widget.posX, widget.width));
+
+            if (parent) {
+                widget.setX(this.relativeToParentPosX(parent, widget));
+            }
+        }
+
+        if (typeof (widget.posY) == 'string') {
+
+            if (!parent)
+                widget.setY(this.relativeToAbsolutePosY(widget.posY, widget.height));
+
+            if (parent) {
+                widget.setY(this.relativeToParentPosY(parent, widget));
+            }
+        }
+        }
+        
+    }
+
+
+    relativeToAbsolutePosX(relativeX, width) {
         switch (relativeX) {
             case "left":
                 return 0;
@@ -17,7 +65,16 @@ export class PositionHelper {
         }
     }
 
-    relativeToAbsoulePosText(relativeX, text) {
+    relativeToAbsolutePosY(relativeY, height) {
+        switch (relativeY) {
+            case "top":
+                return 0;
+            case "bottom": return this.height - height -20;
+            case "center": return this.height / 2 - height / 2;
+        }
+    }
+
+    relativeToAbsolutePosTextX(relativeX, text) {
         let textwidth = this.ctx.measureText(text).width;
 
         switch (relativeX) {

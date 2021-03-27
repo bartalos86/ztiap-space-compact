@@ -1,6 +1,6 @@
 import { Button, TextButton, ToggleButton } from "../Controls/Button.js";
 import { BaseScreen } from "./BaseScreen.js";
-import { Text } from "../Controls/Text.js";
+import { Text, TextWithShadow } from "../Controls/Text.js";
 
 import { AnimatedImageWidget, ImageWidget } from "../Controls/Image.js";
 import { SpeedSpaceship } from "../Models/Spaceship.js";
@@ -12,7 +12,7 @@ export class MainMenu extends BaseScreen {
     constructor(sceneManager) {
         super("main-menu","Main menu", "/src/assets/background/bg3.svg");
 
-        let title = new Text("Space compact", "center", 320, "60pt","arcade");
+        let title = new TextWithShadow("Space compact", "center", 320, "60pt","arcade");
         let earthAnimation = new Animation2D(100, 100, 160, 0.25);
         let planet = new AnimatedImageWidget("/src/assets/decors/earth-sprite-2.png", "center", 50, 180, 180, earthAnimation);
         let shipAnimation = new Animation2D(32, 32, 5, 0.2);
@@ -30,7 +30,11 @@ export class MainMenu extends BaseScreen {
 
 
         let spaceCenter = new TextButton("center", 480, 250, 75, "Space center");
+        spaceCenter.addOnClick(() => sceneManager.setScene("space-center"));
+
         let scoreBtn = new TextButton("center", 580, 250, 75, "Scoreboard");
+
+        scoreBtn.addOnClick(() => sceneManager.setScene("scoreboard"));
 
         let controlsTxt = new Text("controls","center","center","13px")
         let controls = new TextButton(20, 660, 100, 40, controlsTxt);

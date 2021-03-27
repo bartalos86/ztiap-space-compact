@@ -1,5 +1,6 @@
 
 import { Observer } from "../BaseTypes/Observer.js";
+
 export class BaseScreen extends Observer{
     constructor(sceneId,title, background = "") {
         super();

@@ -4,6 +4,9 @@ import { GameScreen } from "./Screens/GameScreen.js";
 import { MainMenu } from "./Screens/MainMenu.js";
 import { ImageWidget } from "./Controls/Image.js";
 import { ToggleButton } from "./Controls/Button.js";
+import { GameOverScreen } from "./Screens/GameOverScreen.js";
+import { ScoreboardScreen } from "./Screens/ScoreboardScreen.js";
+import { SpaceCenterScreen } from "./Screens/SpaceCenterScreen.js";
 
 export class SceneManager {
     constructor(controller) {
@@ -18,7 +21,7 @@ export class SceneManager {
         controller.addSubject(this.globalScene);
 
 
-        this.sceneCollection = [new MainMenu(this), new ControlsScreen(this), new GameScreen(this)];
+        this.sceneCollection = [new MainMenu(this), new ControlsScreen(this), new GameScreen(this), new GameOverScreen(this), new ScoreboardScreen(this), new SpaceCenterScreen(this)];
         this.setScene("main-menu");
     }
 
@@ -73,6 +76,14 @@ export class SceneManager {
                 this.currentScene.activate();
                 this.controller.addSubject(this.currentScene);
 
+            }
+        }
+    }
+
+    getScene(sceneId) {
+        for (let i = 0; i < this.currentScene.length; i++) {
+            if (this.currentScene[i] == sceneId) {
+                return this.currentScene[i];
             }
         }
     }
