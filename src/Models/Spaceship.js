@@ -8,6 +8,7 @@ export class SpaceshipBase extends Sprite {
         super(sprite, size, size, animation);
         this.position = new Vector2D(100, 100);
         this.speed = 10;
+        this.firepower = 20;
     }
 
     move(direction, delta) {
@@ -39,6 +40,7 @@ export class FireSpaceship extends SpaceshipBase {
         let animation = new Animation2D(32, 32, 5, 0.3);
         super("/src/assets/sprites/spaceship-sprite.png", 80, animation);
         this.speed = 10;
+        this.firepower = 80;
     }
 }
 
@@ -48,5 +50,6 @@ export class SpeedSpaceship extends SpaceshipBase {
         let animation = new Animation2D(32, 32, 5, 0.3);
         super("/src/assets/sprites/spaceship_speed-sprite.png", 80, animation);
         this.speed = 25;
+        this.firepower = 55;
     }
 }

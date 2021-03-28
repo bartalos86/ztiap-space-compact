@@ -36,6 +36,16 @@ export class BaseScreen extends Observer{
         return this.widgets;
     }
 
+    getWidgetById(id) {
+
+        for (let i = 0; i < this.widgets.length; i++){
+            if (this.widgets[i].getID() == id) {
+                return this.widgets[i];
+            }
+            
+        }
+    }
+
     getTitle() {
         return this.title;
     }

@@ -3,9 +3,6 @@ import { Controller } from "./Controller.js";
 import { Display } from "./Display.js";
 import { StartEnemy, DefaultEnemy, StrongEnemy } from "./Models/Enemy.js";
 import { FireSpaceship, SpeedSpaceship } from "./Models/Spaceship.js";
-import { GameScreen } from "./Screens/GameScreen.js";
-import { ImageWidget } from "./Controls/Image.js";
-import { ToggleButton } from "./Controls/Button.js";
 import { SceneManager } from "./SceneManager.js";
 
 window.onload = () => {
@@ -40,61 +37,24 @@ window.onload = () => {
 
     let sceneManager = new SceneManager(controller);
 
+    //Loop for the GUI
+    async function menuLoop() {
+        await display.drawScreen(sceneManager.getCurrentScene());
+        await display.drawScreen(sceneManager.getGlobalScene());
 
-    /*let scene = "menu";
-    function setScene(localScene) {
-        scene = localScene;
-        display.clear();
+        window.requestAnimationFrame(menuLoop);
+    }
 
-        if (scene == "menu") {
-            gameScreen.deactivate();
-            mainMenu.activate();
-        } else if() {
-            mainMenu.deactivate();
-            gameScreen.activate();
-        }
-
-    }*/
-
-
-
-    /*let mainMenu = new MainMenu({ setScene }, controller);
-    
-    let gameScreen = new GameScreen({ setScene });
-    gameScreen.addSubject(musicBtn);
-    gameScreen.addSubject(soundBtn);
-
-    gameScreen.addWidget(musicBtn);
-    gameScreen.addWidget(soundBtn);
-
-    controller.addSubject(mainMenu);
-    controller.addSubject(gameScreen);*/
-
-    //mainMenu.activate();
-
+    //Main game loop
     async function loop(timestamp) {
         var delta = timestamp - lastRender;
 
         if (delta == 'undefined')
             delta = 1;
 
-
-
-        //gameScreen.deactivate();
-
-        //display.clear();
-        
-
-        //console.log(scene);
-
         if (sceneManager.getCurrentSceneId() == "game") {
 
-
             await display.renderBackground(-timestamp / 5);
-
-            //await display.drawScreen(gameScreen);
-
-
 
             for (let i = 0; i < enemies.length; i++) {
                 enemies[i].move(delta);
@@ -104,20 +64,14 @@ window.onload = () => {
             await display.drawSprite(spaceship, delta);
         }
 
-
-        await display.drawScreen(sceneManager.getCurrentScene());
-
-        await display.drawScreen(sceneManager.getGlobalScene());
-        //console.log(delta);
-
-
-
         lastRender = timestamp;
+
         window.requestAnimationFrame(loop);
     }
 
     var lastRender = 0;
     window.requestAnimationFrame(loop);
+    window.requestAnimationFrame(menuLoop);
 
 
 

@@ -11,6 +11,14 @@ export class BaseWidget extends Observable {
 
     }
 
+    setID(id) {
+        this.id = id;
+    }
+
+    getID() {
+        return this.id;
+    }
+
     setX(x) {
         this.posX = x;
     }

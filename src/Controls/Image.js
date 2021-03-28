@@ -20,6 +20,12 @@ export class ImageWidget extends Widget {
         return this.animated;
     }
 
+    setPath(path) {
+        let image = new Image();
+        image.src = path;
+        this.drawable = image;
+    }
+
     getRotation() {
         return this.rotation;
     }

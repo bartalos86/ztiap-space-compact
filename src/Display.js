@@ -54,10 +54,13 @@ class Display {
 
         if (widget.type == "image")
             await this.drawImageWidget(widget);
-        
+
         if (widget.type == "progressbar") {
             await this.drawProgressbar(widget);
         }
+
+        if (widget.type == "health")
+            await this.drawHealth(widget);
     }
 
     async drawTextWidget(widget) {
@@ -80,7 +83,7 @@ class Display {
             this.printText(widget.text, posX + shadow.offsetX, posY + shadow.offsetY, shadow.color);
             this.ctx.fillStyle = widget.color;
         }
-        
+
         this.printText(widget.text, posX, posY);
 
     }
@@ -138,10 +141,20 @@ class Display {
             this.ctx.fillStyle = "white";
         }
 
+        if (widget.getHoverBackground() && widget.getMouseOver())
+        this.ctx.drawImage(widget.getHoverBackground(), widget.posX, widget.posY, widget.width, widget.height);
+    else
         this.ctx.drawImage(widget.getBackground(), widget.posX, widget.posY, widget.width, widget.height);
 
-        if (widget.getContent())
-            await this.renderWidget(widget.getContent());
+
+
+        if (widget.getContent()) {
+            if (widget.getMouseOver() && widget.getHoverContent())
+                await this.renderWidget(widget.getHoverContent());
+            else
+                await this.renderWidget(widget.getContent());
+
+        }
         //this.ctx.font = `${widget.getText().fontSize} ${widget.getText().fontFamily}`;
         //this.printText(widget.getContent().text, widget.getContent().posX + widget.posX + widget.width / 2, widget.getContent().posY + widget.posY + widget.height / 2 + 10);
 
@@ -151,11 +164,23 @@ class Display {
 
     async drawProgressbar(widget) {
         this.positionHelper.normalizeWidgetPositions(widget);
-       // console.log(widget.getProgressWidth());
+        // console.log(widget.getProgressWidth());
 
         this.ctx.drawImage(widget.getBackDrawable(), widget.posX, widget.posY, widget.width, widget.height);
         this.ctx.drawImage(widget.getProgressDrawable(), widget.posX, widget.posY, widget.getProgressWidth(), widget.height);
 
+    }
+
+    async drawHealth(widget) {
+        this.positionHelper.normalizeWidgetPositions(widget);
+        //console.log(widget);
+        let prevPos = widget.posX;
+        for (let i = 0; i < widget.getCurrentHealth(); i++){
+            
+            this.ctx.drawImage(widget.getDrawable(), prevPos , widget.posY, widget.getSingleSize(), widget.height);
+
+            prevPos += widget.getMargin();
+        }
     }
 
 

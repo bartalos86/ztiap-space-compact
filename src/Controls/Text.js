@@ -19,6 +19,14 @@ export class Text extends BaseWidget{
         return this.textShadow;
     }
 
+    setText(text) {
+        this.text = text;
+    }
+
+    setColor(color) {
+        this.color = color;
+    }
+
    
 }
 

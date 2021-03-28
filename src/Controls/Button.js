@@ -4,7 +4,7 @@ import { ImageWidget } from "./Image.js";
 
 export class Button extends Widget {
 
-    constructor(posX, posY, width, height, background, content) {
+    constructor(posX, posY, width, height, background, content, hoverContent = null, hoverBackground = null) {
         super(posX, posY, width, height, "button");
         this.background = background;
 
@@ -14,10 +14,37 @@ export class Button extends Widget {
         let img = new Image(this.width, this.height);
         img.src = this.background;
         this.background = img;
+
+        if (hoverContent) {
+            this.hoverContent = hoverContent;
+            this.hoverContent.parent = this;
+        }
+        
+
+        this.hoverBackground = null;
+
+        if (hoverBackground) {
+            let hoverImg = new Image();
+            hoverImg.src = hoverBackground;
+            this.hoverBackground = hoverImg;
+        }
     }
 
     getContent() {
         return this.getChild();
+    }
+
+    setContent(content) {
+        this.setChild(content);
+    }
+
+    setHoverContent(hoverContent) {
+        this.hoverContent = hoverContent;
+        this.hoverContent.parent = this;
+    }
+
+    removeHoverContent() {
+        this.hoverContent = null;
     }
 
 
@@ -32,7 +59,7 @@ export class Button extends Widget {
     click() {
         for (let i = 0; i < this.onclick.length; i++)
             this.onclick[i]();
-        
+
     }
 
     setMouseOver(state) {
@@ -41,6 +68,14 @@ export class Button extends Widget {
 
     getMouseOver() {
         return this.isMouseOver;
+    }
+
+    getHoverBackground() {
+        return this.hoverBackground;
+    }
+
+    getHoverContent() {
+        return this.hoverContent;
     }
 
     notify(event) {
@@ -52,11 +87,11 @@ export class Button extends Widget {
 
 
 export class ImageButton extends Button {
-    constructor(posX, posY, width, height, imagePath, imageSize) {
-       let content = new ImageWidget(imagePath, 0, 0, imageSize, imageSize);
+    constructor(posX, posY, width, height, imagePath, imageSize, hoverContent = null, hoverBackground = null) {
+        let content = new ImageWidget(imagePath, 0, 0, imageSize, imageSize);
 
-        super(posX, posY, width, height, "/src/assets/ui/button.png", content);
-        
+        super(posX, posY, width, height, "/src/assets/ui/button.png", content, hoverContent, hoverBackground);
+
     }
 
 
@@ -74,12 +109,12 @@ export class TextButton extends Button {
     }
 }
 
-export class ToggleButton extends Button{
-    
+export class ToggleButton extends Button {
+
     constructor(posX, posY, width, height, content, contentToggled) {
         super(posX, posY, width, height, "/src/assets/ui/button.png", content);
         this.addOnClick(() => this.toggle());
-      //  this.addOnClick(() => console.log("clicked"));
+        //  this.addOnClick(() => console.log("clicked"));
         this.toggled = false;
         this.baseContent = content;
         this.toggledContent = contentToggled;
@@ -101,7 +136,7 @@ export class ToggleButton extends Button{
 
     constructor(posX, posY, width, height, text) {
         super(posX, posY, width, height,"",)
-        
+
     }
 
 }*/
