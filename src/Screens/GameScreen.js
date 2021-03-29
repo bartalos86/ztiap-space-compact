@@ -22,7 +22,7 @@ export class GameScreen extends BaseScreen{
         backButton.addOnClick(() => {
 
             if(healthWidget.getCurrentHealth() <= 0)
-                sceneManager.setScene("main-menu");
+                sceneManager.setScene("game-over");
             else
             healthWidget.setHealth(healthWidget.getCurrentHealth() - 1);
                 

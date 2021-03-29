@@ -11,53 +11,51 @@ export class SpaceCenterScreen extends BaseScreen {
         super("space-center", "Space center", "/src/assets/background/bg.svg");
 
         this.shipDatabase = new ShipDatabase();
-
         this.shipInView = this.shipDatabase.getCurrentShip();
-        //this.shipInView = this.shipDatabase.getNextShip();
+       
 
+        //Title and back button
         let titleText = new TextWithShadow("Space Center", "center", 100, "60pt", "arcade");
-
         let backBtnText = new Text("back", 70, "center", "13px");
         let backButton = new Button(20, 20, 120, 40, "/src/assets/ui/back-plain.png", backBtnText);
 
+
+        //Spaceship control
         let shipAnimation = new Animation2D(32, 32, 5, 0.2);
         let spaceship = new AnimatedImageWidget(this.shipInView.sprite, "center", 140, 200, 200, shipAnimation);
-
         spaceship.setID("spaceship-sprite");
 
-        backButton.addOnClick(() => sceneManager.setScene("main-menu"));
-        this.addSubject(backButton);
 
+        //Arrows
         let leftArrowBtn = new Button(100, 180, 100, 100, "", new ImageWidget("/src/assets/ui/arrow-left.png", "center", "center", 100, 100), new ImageWidget("/src/assets/ui/arrow-left-hover.png", "center", "center", 100, 100));
         let rightArrowBtn = new Button(1080, 180, 100, 100, "", new ImageWidget("/src/assets/ui/arrow-right.png", "center", "center", 100, 100), new ImageWidget("/src/assets/ui/arrow-right-hover.png", "center", "center", 100, 100));
 
+        //Texts
         let textShadow = new TextShadow(1, 3, "black");
         let firepowerText = new Text("Firepower:", 300, 455, "15pt", "pixel", "#FEAE34", textShadow);
         let speedText = new Text("Speed:", 275, 515, "15pt", "pixel", "#FEAE34", textShadow);
         let specialText = new Text("Special ability:", 315, 575, "15pt", "pixel", "#FEAE34", textShadow);
 
+        //Progress bars
         let firepowerProgress = new DefaultProgressbar(600, 435, 340, 15);
         firepowerProgress.setID("firepower-progress");
 
         let speedProgress = new DefaultProgressbar(600, 500, 340, 15);
         speedProgress.setID("speed-progress");
-
-        let specialIcon = new ImageWidget("/src/assets/sprites/rocket.png", 600, 550, 72*1.1, 36*1.1);
-        specialIcon.setID("special-icon");
-
+        
         firepowerProgress.setPercentage(this.shipInView.firepower);
         speedProgress.setPercentage(this.shipInView.speed);
 
-        rightArrowBtn.addOnClick(() => this.nextShip());
-        leftArrowBtn.addOnClick(() => this.prevShip());
 
-        this.addSubject(leftArrowBtn);
-        this.addSubject(rightArrowBtn);
+        //Special icon
+        let specialIcon = new ImageWidget("/src/assets/sprites/rocket.png", 600, 550, 72*1.1, 36*1.1);
+        specialIcon.setID("special-icon");
+
+        //Select Button stuff
         let selectText = new TextWithShadow("Select", "center", "center", "30pt", "arcade");
         let hoverText = new TextWithShadow("Select", "center", "center", "30pt", "arcade", "#FEAE34");
         let selectButton = new Button("center", 610, 100, 50, "", selectText, hoverText);
-
-        selectButton.addOnClick(() => this.selectShip());
+        selectButton.setID("select-button");
 
         if (this.shipInView.isSelected) {
             selectText.setText("Selected");
@@ -71,13 +69,24 @@ export class SpaceCenterScreen extends BaseScreen {
             selectButton.setHoverContent(hoverText);
         }
 
-        selectButton.setID("select-button");
+        //Observer setup and click handing
+        rightArrowBtn.addOnClick(() => this.nextShip());
+        leftArrowBtn.addOnClick(() => this.prevShip());
+        selectButton.addOnClick(() => this.selectShip());
+        backButton.addOnClick(() => sceneManager.setScene("main-menu"));
+
+        this.addSubject(leftArrowBtn);
+        this.addSubject(rightArrowBtn);
         this.addSubject(selectButton);
-        //let speProgress = new DefaultProgressbar(650, 460, 270, 13);
+        this.addSubject(backButton);
+    
 
-        let scoreBg = new ImageWidget("/src/assets/ui/space-center-bg.png", "center", 350, 1000, 350);
+        //Stats menu background and decorations
+        let statsBg = new ImageWidget("/src/assets/ui/space-center-bg.png", "center", 350, 1000, 350);
+        let sunDecor = new ImageWidget("/src/assets/decors/sun.png", 1070, -20, 200, 200);
+        let meteorDecor = new ImageWidget("/src/assets/decors/meteor1.png", 150, 370, 120, 120);
 
-        this.widgets = [scoreBg, backButton, leftArrowBtn, rightArrowBtn, titleText, speedText, specialText,
+        this.widgets = [meteorDecor,statsBg,sunDecor, backButton, leftArrowBtn, rightArrowBtn, titleText, speedText, specialText,
             spaceship, firepowerText, firepowerProgress, speedProgress, specialIcon, selectButton];
     }
 
@@ -133,7 +142,7 @@ export class SpaceCenterScreen extends BaseScreen {
  class ShipDatabase {
     constructor() {
         this.ships = [
-            { sprite: "/src/assets/sprites/spaceship-sprite.png", firepower: 80, speed: 35, specialIcon: "/src/assets/sprites/rocket.png", isSelected: true },
+            { sprite: "/src/assets/sprites/spaceship-sprite.png", firepower: 75, speed: 50, specialIcon: "/src/assets/sprites/rocket.png", isSelected: true },
             { sprite: "/src/assets/sprites/spaceship_speed-sprite.png", firepower: 55, speed: 80, specialIcon: "/src/assets/sprites/rocket.png", isSelected: false },
         ]
 

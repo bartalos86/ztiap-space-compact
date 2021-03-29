@@ -19,13 +19,11 @@ export class BaseScreen extends Observer{
     }
 
     removeWidget(widget) {
-        for (let i = 0; i < this.widgets.length; i++){
-            if (this.widgets[i] == widget) {
-                this.widgets.splice(i, 1);
-                break;
-            }
-            
-        }
+
+        let index = this.widgets.indexOf(widget);
+
+        if(index != -1)
+        this.widgets.splice(index, 1);
     }
 
     getSceneId() {
@@ -68,10 +66,12 @@ export class BaseScreen extends Observer{
         for (let i = 0; i < this.subjects.length; i++) {
             let subject = this.subjects[i];
 
+            let isColision = event.data.x > subject.posX && event.data.x < subject.posX + subject.width &&
+                event.data.y > subject.posY && event.data.y < subject.posY + subject.height;
+
             if (event.type == 'mousemove') {
 
-                if (event.data.x > subject.posX && event.data.x < subject.posX + subject.width &&
-                    event.data.y > subject.posY && event.data.y < subject.posY + subject.height) {
+                if (isColision) {
                     subject.setMouseOver(true);
                 }
                 else
@@ -82,8 +82,7 @@ export class BaseScreen extends Observer{
                // console.log(`postion: ${event.data.x} rect: ${subject.posX} ${subject.posX + subject.width}`);
 
 
-                if (event.data.x > subject.posX && event.data.x < subject.posX + subject.width &&
-                    event.data.y > subject.posY && event.data.y < subject.posY + subject.height) {
+                if (isColision) {
 
                     subject.click();
                 }
