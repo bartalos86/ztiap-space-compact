@@ -66,8 +66,9 @@ export class BaseScreen extends Observer{
         for (let i = 0; i < this.subjects.length; i++) {
             let subject = this.subjects[i];
 
-            let isColision = event.data.x > subject.posX && event.data.x < subject.posX + subject.width &&
+           let isColision = event.data.x > subject.posX && event.data.x < subject.posX + subject.width &&
                 event.data.y > subject.posY && event.data.y < subject.posY + subject.height;
+            
 
             if (event.type == 'mousemove') {
 

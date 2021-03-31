@@ -21,7 +21,7 @@ export class SpaceCenterScreen extends BaseScreen {
 
 
         //Spaceship control
-        let shipAnimation = new Animation2D(32, 32, 5, 0.2);
+        let shipAnimation = new Animation2D(32, 32, 5, 3.3);
         let spaceship = new AnimatedImageWidget(this.shipInView.sprite, "center", 140, 200, 200, shipAnimation);
         spaceship.setID("spaceship-sprite");
 
@@ -83,7 +83,8 @@ export class SpaceCenterScreen extends BaseScreen {
 
         //Stats menu background and decorations
         let statsBg = new ImageWidget("/src/assets/ui/space-center-bg.png", "center", 350, 1000, 350);
-        let sunDecor = new ImageWidget("/src/assets/decors/sun.png", 1070, -20, 200, 200);
+        let sunAnimation = new Animation2D(64, 64, 200, 5);
+        let sunDecor = new AnimatedImageWidget("/src/assets/decors/sun-blue.png", 1070, -20, 200, 200,sunAnimation);
         let meteorDecor = new ImageWidget("/src/assets/decors/meteor1.png", 150, 370, 120, 120);
 
         this.widgets = [meteorDecor,statsBg,sunDecor, backButton, leftArrowBtn, rightArrowBtn, titleText, speedText, specialText,

@@ -39,15 +39,7 @@ export class ScoreboardScreen extends BaseScreen {
 
         this.widgets = [marsDecor, marsDecorSmall, titleText, scoreBg, divider, playerNameText, dateText, scoreText, backButton, planetDecor];
         
-        this.addHighscore("mark", "2021.4.1", 300);
-        this.addHighscore("jani", "2021.4.1", 400);
-        this.addHighscore("pista", "2021.4.1", 500);
-        this.addHighscore("andras", "2021.4.1", 900);
-        this.addHighscore("geri", "2021.4.1", 800);
-        this.addHighscore("bartalos86", "2021.4.1", 200);
-        this.addHighscore("bartalos86", "2021.4.1", 200);
-        this.addHighscore("bartalos86", "2021.4.1", 200);
-        this.addHighscore("bartalos86", "2021.4.1", 200);
+        
         this.addHighscore("Destroyer200", "2021.4.1", 10000000);
         this.addHighscore("anonymous", "2021.4.1", 2800);
 

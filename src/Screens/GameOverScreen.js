@@ -13,10 +13,10 @@ export class GameOverScreen extends BaseScreen {
 
         let planetDecor = new ImageWidget("/src/assets/decors/earth.png", 200, 150, 170, 170);
 
-        let marsAnimation = new Animation2D(100, 100, 100, 0.2);
+        let marsAnimation = new Animation2D(100, 100, 100, 0.2*16);
         let marsDecor = new AnimatedImageWidget("/src/assets/decors/mars-sprite-2.png", 850, 70, 50, 50, marsAnimation);
 
-        let shipAnimation = new Animation2D(32, 32, 5, 0.2);
+        let shipAnimation = new Animation2D(32, 32, 5, 0.2*16);
         let spaceship = new AnimatedImageWidget("/src/assets/sprites/spaceship-sprite.png", 80, 500, 100, 100, shipAnimation, -60);
 
 

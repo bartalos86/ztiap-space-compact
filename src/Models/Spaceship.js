@@ -47,7 +47,7 @@ export class FireSpaceship extends SpaceshipBase {
 export class SpeedSpaceship extends SpaceshipBase {
 
     constructor() {
-        let animation = new Animation2D(32, 32, 5, 0.3);
+        let animation = new Animation2D(32, 32, 5, 0.3*16);
         super("/src/assets/sprites/spaceship_speed-sprite.png", 80, animation);
         this.speed = 25;
         this.firepower = 55;

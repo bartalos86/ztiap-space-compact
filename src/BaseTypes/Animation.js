@@ -7,6 +7,11 @@ export class Animation2D{
         this.cols = cols;
         this.currentFrame = 0;
         this.animationSpeed = animationSpeed;
+        this.delta = 1;
+    }
+
+    setDelta(delta) {
+        this.delta = delta;
     }
 
 
@@ -16,7 +21,7 @@ export class Animation2D{
         }
 
         let frameStart = Math.floor(this.currentFrame) * this.spWidth;
-        this.currentFrame += this.animationSpeed;
+        this.currentFrame += this.animationSpeed/this.delta;
         return { start: frameStart, width: this.spWidth, height: this.spHeight };
     }
 

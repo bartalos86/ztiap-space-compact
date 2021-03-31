@@ -1,4 +1,3 @@
-import { MainMenu } from "./Screens/MainMenu.js";
 import { Controller } from "./Controller.js";
 import { Display } from "./Display.js";
 import { StartEnemy, DefaultEnemy, StrongEnemy } from "./Models/Enemy.js";
@@ -32,7 +31,6 @@ window.onload = () => {
 
         }
 
-
     }
 
     let sceneManager = new SceneManager(controller);
@@ -45,12 +43,16 @@ window.onload = () => {
         window.requestAnimationFrame(menuLoop);
     }
 
+    
+
     //Main game loop
     async function loop(timestamp) {
         var delta = timestamp - lastRender;
 
         if (delta == 'undefined')
             delta = 1;
+        
+        display.setDelta(delta);
 
         if (sceneManager.getCurrentSceneId() == "game") {
 

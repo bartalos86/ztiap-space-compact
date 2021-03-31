@@ -13,11 +13,11 @@ export class MainMenu extends BaseScreen {
         super("main-menu","Main menu", "/src/assets/background/bg3.svg");
 
         let title = new TextWithShadow("Space compact", "center", 320, "60pt","arcade");
-        let earthAnimation = new Animation2D(100, 100, 160, 0.25);
+        let earthAnimation = new Animation2D(100, 100, 160, 0.25*16);
         let planet = new AnimatedImageWidget("/src/assets/decors/earth-sprite-2.png", "center", 50, 180, 180, earthAnimation);
-        let shipAnimation = new Animation2D(32, 32, 5, 0.2);
+        let shipAnimation = new Animation2D(32, 32, 5, 0.2*16);
         let spaceship = new AnimatedImageWidget("/src/assets/sprites/spaceship-sprite.png", 600, 270, 100, 100,shipAnimation, -30);
-        let marsAnimation = new Animation2D(100, 100, 100, 0.2);
+        let marsAnimation = new Animation2D(100, 100, 100, 0.2*16);
         let mars = new AnimatedImageWidget("/src/assets/decors/mars-sprite-2.png", 910, 305, 50, 50,marsAnimation);
         
 

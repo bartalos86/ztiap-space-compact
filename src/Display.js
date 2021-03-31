@@ -9,6 +9,7 @@ class Display {
 
         this.init();
         window.onresize = () => this.init();
+        this.delta = 1;
 
 
     }
@@ -126,6 +127,7 @@ class Display {
     }
 
     async renderAnimation(IDrawable, animation, position, size) {
+        animation.setDelta(this.delta);
         this.ctx.drawImage(await IDrawable.getDrawable(), animation.getNextAnimationFramePos().start, 0, animation.getFrameWidth(), animation.getFrameHeight(),
             position.x, position.y,
             size.width, size.height);
@@ -228,6 +230,10 @@ class Display {
             }
         }
 
+    }
+
+    setDelta(delta) {
+        this.delta = delta;
     }
 
     clear() {
