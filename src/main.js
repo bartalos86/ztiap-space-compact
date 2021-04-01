@@ -1,7 +1,7 @@
 import { Controller } from "./Controller.js";
 import { Display } from "./Display.js";
 import { StartEnemy, DefaultEnemy, StrongEnemy } from "./Models/Enemy.js";
-import { FireSpaceship, SpeedSpaceship } from "./Models/Spaceship.js";
+import { FireSpaceship } from "./Models/Spaceship.js";
 import { SceneManager } from "./SceneManager.js";
 
 window.onload = () => {

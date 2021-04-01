@@ -80,9 +80,6 @@ export class BaseScreen extends Observer{
 
             }
             if (event.type == 'click') {
-               // console.log(`postion: ${event.data.x} rect: ${subject.posX} ${subject.posX + subject.width}`);
-
-
                 if (isColision) {
 
                     subject.click();

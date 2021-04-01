@@ -64,36 +64,4 @@ export class MainMenu extends BaseScreen {
 
     }
 
-   /* notify(event) {
-
-        for (let i = 0; i < this.subjects.length; i++) {
-            let subject = this.subjects[i];
-
-            if (event.type == 'mousemove') {
-
-                if (event.data.x > subject.posX && event.data.x < subject.posX + subject.width &&
-                    event.data.y > subject.posY && event.data.y < subject.posY + subject.height) {
-                    subject.setMouseOver(true);
-                }
-                else
-                    subject.setMouseOver(false);
-
-            }
-            if (event.type == 'click') {
-                //console.log(`postion: ${event.data.x} rect: ${subject.posX} ${subject.posX + subject.width}`);
-
-
-                if (event.data.x > subject.posX && event.data.x < subject.posX + subject.width &&
-                    event.data.y > subject.posY && event.data.y < subject.posY + subject.height) {
-
-                    subject.click();
-                }
-            }
-
-        }
-
-
-
-    }*/
-
 }

@@ -10,8 +10,6 @@ class Display {
         this.init();
         window.onresize = () => this.init();
         this.delta = 1;
-
-
     }
 
 
@@ -118,8 +116,6 @@ class Display {
             this.ctx.drawImage(widget.getDrawable(), posX, posY, widget.width, widget.height);
 
         }
-
-
 
         if (widget.getRotation() % 360 != 0) {
             this.ctx.restore();
