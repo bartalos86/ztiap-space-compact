@@ -12,6 +12,8 @@ export class SpaceCenterScreen extends BaseScreen {
 
         this.shipDatabase = new ShipDatabase();
         this.shipInView = this.shipDatabase.getCurrentShip();
+
+        this.sceneManager = sceneManager;
        
 
         //Title and back button
@@ -124,6 +126,7 @@ export class SpaceCenterScreen extends BaseScreen {
 
     selectShip() {
         this.shipDatabase.selectCurrentShip();
+        this.sceneManager.getGameManager().setSpaceship(this.shipDatabase.currentShip.id);
         this.updateWidgets();
     }
 
@@ -143,8 +146,8 @@ export class SpaceCenterScreen extends BaseScreen {
  class ShipDatabase {
     constructor() {
         this.ships = [
-            { sprite: "/src/assets/sprites/spaceship-sprite.png", firepower: 75, speed: 50, specialIcon: "/src/assets/sprites/rocket.png", isSelected: true },
-            { sprite: "/src/assets/sprites/spaceship_speed-sprite.png", firepower: 55, speed: 80, specialIcon: "/src/assets/sprites/rocket.png", isSelected: false },
+            {id: "fire" ,sprite: "/src/assets/sprites/spaceship-sprite.png", firepower: 75, speed: 50, specialIcon: "/src/assets/sprites/rocket.png", isSelected: true },
+            {id: "speed" ,sprite: "/src/assets/sprites/spaceship_speed-sprite.png", firepower: 55, speed: 80, specialIcon: "/src/assets/sprites/rocket.png", isSelected: false },
         ]
 
         this.prevShip = null;

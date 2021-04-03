@@ -122,7 +122,6 @@ export class ToggleButton extends Button {
 
     toggle() {
         this.toggled = !this.toggled;
-        console.log(this.toggled);
         if (this.toggled) {
             this.setChild(this.toggledContent)
         } else {

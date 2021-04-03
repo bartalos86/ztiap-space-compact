@@ -1,5 +1,6 @@
 import { PositionHelper } from "./PosiotionHelper.js";
 import { Background } from "./Models/Background.js";
+import { SpaceshipBase } from "./Models/Spaceship.js";
 
 
 class Display {
@@ -186,17 +187,26 @@ class Display {
     async drawSprite(gameObj) {
 
 
-        if (gameObj.position.getX() + gameObj.width > this.width) {
-            gameObj.position.setX(0);
-        } else if (gameObj.position.getX() < 0) {
-            gameObj.position.setX(this.width - gameObj.width);
+        if (gameObj instanceof SpaceshipBase) {
+            if (gameObj.position.getX() > this.width) {
+                gameObj.position.setX(0);
+            } else if (gameObj.position.getX() < 0) {
+                gameObj.position.setX(this.width);
+            }
+    
+            if (gameObj.position.getY() > this.height) {
+                gameObj.position.setY(0);
+            } else if (gameObj.position.getY() < 0) {
+                gameObj.position.setY(this.height - gameObj.height);
+            }
+        } else {
+            if (gameObj.position.getX() > this.width) {
+                gameObj.destroy();
+            } else if (gameObj.position.getX() < 0) {
+                gameObj.destroy();
+            }
         }
-
-        if (gameObj.position.getY() + gameObj.height > this.height) {
-            gameObj.position.setY(0);
-        } else if (gameObj.position.getY() < 0) {
-            gameObj.position.setY(this.height - gameObj.height);
-        }
+       
         //TODO: Separate this
         let animation = gameObj.getAnimation();
 
@@ -219,7 +229,7 @@ class Display {
         offsetX = offsetX % this.width;
         let size = 200;
         let bg = new Background(background, this.width, this.height);
-        for (let i = 0; i < this.width * 2; i += size) {
+        for (let i = 0; i < this.width * 3; i += size) {
             for (let j = 0; j < this.height; j += size) {
                 this.ctx.drawImage(await bg.getDrawable(), bg.position.getX() + i + offsetX, bg.position.getY() + j,
                     size, size);

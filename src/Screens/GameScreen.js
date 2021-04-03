@@ -17,8 +17,13 @@ export class GameScreen extends BaseScreen{
 
         let healthWidget = new HealthWidget("center", 20, 46,40);
 
- 
-        
+        this.addOnActivated(() => {
+          //  let name = prompt("Name: ");
+           // playerNameText.text = name;
+            
+            sceneManager.getAudioManager().playMusic("background-1")
+        });
+        this.addOnDeactivated(() => sceneManager.getAudioManager().stopMusic());
         backButton.addOnClick(() => {
 
             if(healthWidget.getCurrentHealth() <= 0)

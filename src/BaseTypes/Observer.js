@@ -1,7 +1,8 @@
 export class Observer {
 
-    constructor() {
-        this.subjects = []
+    constructor(type = "all") {
+        this.subjects = [];
+        this.type = type;
     }
 
     addSubject(subj) {
@@ -26,5 +27,9 @@ export class Observer {
     notifySubjects(event) {
         for (let i = 0; i < this.subjects.length; i++)
             this.subjects[i].notify(event);
+    }
+
+    getType() {
+        return this.type;
     }
 }

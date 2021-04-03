@@ -76,7 +76,6 @@ export class ScoreboardScreen extends BaseScreen {
 
         for (let i = 0; i < numOfScores; i++){
             let scoreObj = this.highscores[i];
-            console.log(scoreObj);
             scoreObj.getTextComponents().forEach(widget => {
                 this.addWidget(widget);
             });

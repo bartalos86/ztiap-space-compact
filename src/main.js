@@ -1,39 +1,25 @@
+import { AudioManager } from "./Managers/AudioManager.js";
 import { Controller } from "./Controller.js";
 import { Display } from "./Display.js";
-import { StartEnemy, DefaultEnemy, StrongEnemy } from "./Models/Enemy.js";
-import { FireSpaceship } from "./Models/Spaceship.js";
-import { SceneManager } from "./SceneManager.js";
+import { GameManager } from "./Managers/GameManager.js";
+import { SceneManager } from "./Managers/SceneManager.js";
 
 window.onload = () => {
     let display = new Display("canvas");
+    let audio = new AudioManager();
+    //audio.playEffect("shoot");
+    //audio.playMusic("background-2");
 
-    let spaceship = new FireSpaceship();
-    spaceship.position.setPosition(100, 100);
+    /* let spaceship = new FireSpaceship();
+     spaceship.position.setPosition(100, 100);*/
 
-    let enemies = [new StartEnemy(), new StartEnemy(), new DefaultEnemy(), new StrongEnemy()];
-
+    // let enemies = [new StartEnemy(), new StartEnemy(), new DefaultEnemy(), new StrongEnemy()];
     let controller = new Controller(display.getCanvas());
+    let gameManager = new GameManager(audio);
 
-    window.onkeydown = (event) => {
+    let sceneManager = new SceneManager(controller, audio, gameManager);
 
-        console.log(event.key);
-        let key = event.key;
-        switch (key) {
-
-            case "w": spaceship.move("up", 1);
-                break;
-            case "s": spaceship.move("down", 1);
-                break;
-            case "a": spaceship.move("backward", 1);
-                break;
-            case "d": spaceship.move("forward", 1);
-                break;
-
-        }
-
-    }
-
-    let sceneManager = new SceneManager(controller);
+    controller.addSubject(gameManager);
 
     //Loop for the GUI
     async function menuLoop() {
@@ -43,7 +29,7 @@ window.onload = () => {
         window.requestAnimationFrame(menuLoop);
     }
 
-    
+
 
     //Main game loop
     async function loop(timestamp) {
@@ -51,23 +37,28 @@ window.onload = () => {
 
         if (delta == 'undefined')
             delta = 1;
-        
+
         display.setDelta(delta);
 
         if (sceneManager.getCurrentSceneId() == "game") {
 
             await display.renderBackground(-timestamp / 5);
 
-            for (let i = 0; i < enemies.length; i++) {
-                enemies[i].move(delta);
-                await display.drawSprite(enemies[i]);
+
+            for (let i = 0; i < gameManager.getBullets().length; i++) {
+                let bullet = gameManager.getBullets()[i];
+                bullet.move(delta);
+                await display.drawSprite(bullet);
+
+                if (!bullet.getIsAlive()) {
+                    gameManager.removeBullet(bullet);
+                }
             }
 
-            await display.drawSprite(spaceship, delta);
+            await display.drawSprite(gameManager.getPlayer());
         }
 
         lastRender = timestamp;
-
         window.requestAnimationFrame(loop);
     }
 

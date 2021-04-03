@@ -8,7 +8,8 @@ export class Controller extends Observer {
         this.canvas = canvas;
         canvas.addEventListener('click', (ev) => { this.handleClick(ev) });
         canvas.addEventListener('mousemove', (ev) => this.handleMouseMove(ev));
-       // window.addEventListener('keydown', this.handleKeyDown);
+        window.addEventListener('keydown', (ev) => this.handleKeyDown(ev));
+        window.addEventListener('keyup', (ev) => this.handleKeyUp(ev));
     }
 
     handleClick(data) {
@@ -18,13 +19,13 @@ export class Controller extends Observer {
 
     normalizeMousePosition(data) {
 
-        var rect = this.canvas.getBoundingClientRect(), 
-            scaleX = this.canvas.width / rect.width,   
-            scaleY = this.canvas.height / rect.height; 
+        var rect = this.canvas.getBoundingClientRect(),
+            scaleX = this.canvas.width / rect.width,
+            scaleY = this.canvas.height / rect.height;
 
         return {
-            x: (data.clientX - rect.left) * scaleX,   
-            y: (data.clientY - rect.top) * scaleY  
+            x: (data.clientX - rect.left) * scaleX,
+            y: (data.clientY - rect.top) * scaleY
         }
     }
 
@@ -36,6 +37,10 @@ export class Controller extends Observer {
 
     handleKeyDown(data) {
         this.notifySubjects(new Event("keydown", data));
+    }
+
+    handleKeyUp(data) {
+        this.notifySubjects(new Event("keyup", data));
     }
 
 }

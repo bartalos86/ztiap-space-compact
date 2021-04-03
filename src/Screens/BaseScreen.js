@@ -9,10 +9,13 @@ export class BaseScreen extends Observer{
         this.widgets = [];
         this.isActive = false;
         this.sceneId = sceneId;
+
+        this.onActivated = null;
+        this.onDeactivated = null;
     }
 
-    activate() { this.isActive = true }
-    deactivate() {this.isActive = false}
+    activate() { this.isActive = true; if(this.onActivated) this.onActivated(); }
+    deactivate() { this.isActive = false; if (this.onDeactivated) this.onDeactivated();}
 
     addWidget(widget) {
         this.widgets.push(widget);
@@ -54,6 +57,14 @@ export class BaseScreen extends Observer{
         
         for (let i = 0; i < this.subjects.length; i++)
             this.subjects[i].notify(event);
+    }
+
+    addOnActivated(handler) {
+        this.onActivated = handler;
+    }
+
+    addOnDeactivated(handler) {
+        this.onDeactivated = handler;
     }
 
 

@@ -19,7 +19,7 @@ export class GameOverScreen extends BaseScreen {
         let shipAnimation = new Animation2D(32, 32, 5, 0.2*16);
         let spaceship = new AnimatedImageWidget("/src/assets/sprites/spaceship-sprite.png", 80, 500, 100, 100, shipAnimation, -60);
 
-
+        this.addOnActivated(() => sceneManager.getAudioManager().playEffect("gameover"));
 
         let scoreText = new Text("Your score: 200", "center", 430, "20pt");
 
