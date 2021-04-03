@@ -130,12 +130,3 @@ export class ToggleButton extends Button {
     }
 
 }
-
-/*export class TextButton extends Button{
-
-    constructor(posX, posY, width, height, text) {
-        super(posX, posY, width, height,"",)
-
-    }
-
-}*/

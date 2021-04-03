@@ -8,7 +8,7 @@ export class SpaceshipBase extends Sprite {
     constructor(sprite, size, animation, cooldown = 250) {
         super(sprite, size, size, animation);
         this.position = new Vector2D(100, 100);
-        this.speed = 10;
+        this.speed = 50;
         this.firepower = 20;
         this.cooldown = new Timer(cooldown);
        
@@ -83,8 +83,8 @@ export class FireSpaceship extends SpaceshipBase {
 
     constructor() {
         let animation = new Animation2D(32, 32, 5, 0.3*16);
-        super("/src/assets/sprites/spaceship-sprite.png", 80, animation,250);
-        this.speed = 10;
+        super("/src/assets/sprites/spaceship-sprite.png", 80, animation,220);
+        this.speed = 40;
         this.firepower = 80;
 
         this.gunPositions.push(new Vector2D(80-40, 0));
@@ -98,7 +98,7 @@ export class SpeedSpaceship extends SpaceshipBase {
     constructor() {
         let animation = new Animation2D(32, 32, 5, 0.3*16,300);
         super("/src/assets/sprites/spaceship_speed-sprite.png", 80, animation);
-        this.speed = 25;
+        this.speed = 70;
         this.firepower = 55;
 
         this.gunPositions.push(new Vector2D(80, 80 / 2-8));

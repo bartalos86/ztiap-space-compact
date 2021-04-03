@@ -6,6 +6,7 @@ export class Controller extends Observer {
     constructor(canvas) {
         super();
         this.canvas = canvas;
+        this.keys = [];
         canvas.addEventListener('click', (ev) => { this.handleClick(ev) });
         canvas.addEventListener('mousemove', (ev) => this.handleMouseMove(ev));
         window.addEventListener('keydown', (ev) => this.handleKeyDown(ev));
@@ -36,11 +37,17 @@ export class Controller extends Observer {
     }
 
     handleKeyDown(data) {
+        this.keys[data.code] = true;
         this.notifySubjects(new Event("keydown", data));
     }
 
     handleKeyUp(data) {
+        this.keys[data.code] = false;
         this.notifySubjects(new Event("keyup", data));
+    }
+
+    getKeys() {
+        return this.keys;
     }
 
 }

@@ -4,12 +4,15 @@ import { FireSpaceship, SpeedSpaceship } from "../Models/Spaceship.js";
 
 export class GameManager extends Observer {
 
-    constructor(audioManager) {
+    constructor(audioManager, controller) {
         super();
         this.audioManager = audioManager;
+        this.controller = controller;
         this.setSpaceship("fire");
         this.bullets = [];
         this.enemyBullets = [];
+
+        
     }
 
     setSpaceship(shipId) {
@@ -22,6 +25,31 @@ export class GameManager extends Observer {
 
         this.player.setupManagers(this, this.audioManager);
 
+    }
+
+    update(delta) {
+
+        let keys = this.controller.getKeys();
+
+        if (keys["KeyW"]) {
+            this.player.move("up", delta);
+        }
+
+        if (keys["KeyS"]) {
+            this.player.move("down", delta);
+        }
+
+        if (keys["KeyA"]) {
+            this.player.move("backward", delta);
+        }
+
+        if (keys["KeyD"]) {
+            this.player.move("forward", delta);
+        }
+
+        if (keys["Space"]) {
+            this.player.shoot();
+       }
     }
 
     startGame() {
@@ -60,8 +88,6 @@ export class GameManager extends Observer {
         }
 
         console.log("bullet count: " + this.bullets.length);
-
-
     }
 
     spawnBullet(owner, position) {
@@ -72,28 +98,6 @@ export class GameManager extends Observer {
 
     notify(event) {
 
-        if (event.type == "keydown") {
-            let key = event.data.key;
-
-            //  console.log(event.data);
-
-            switch (key) {
-
-                case "w": this.player.move("up", 1);
-                    break;
-                case "s": this.player.move("down", 1);
-                    break;
-                case "a": this.player.move("backward", 1);
-                    break;
-                case "d": this.player.move("forward", 1);
-                    break;
-
-            }
-
-            if (event.data.code == "Space") {
-                this.player.shoot();
-            }
-        }
     }
 
 }

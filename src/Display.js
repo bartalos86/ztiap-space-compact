@@ -189,14 +189,14 @@ class Display {
 
         if (gameObj instanceof SpaceshipBase) {
             if (gameObj.position.getX() > this.width) {
-                gameObj.position.setX(0);
-            } else if (gameObj.position.getX() < 0) {
+                gameObj.position.setX(0-gameObj.width);
+            } else if (gameObj.position.getX() < 0-gameObj.width) {
                 gameObj.position.setX(this.width);
             }
     
             if (gameObj.position.getY() > this.height) {
-                gameObj.position.setY(0);
-            } else if (gameObj.position.getY() < 0) {
+                gameObj.position.setY(0-gameObj.height);
+            } else if (gameObj.position.getY() < 0-gameObj.height) {
                 gameObj.position.setY(this.height - gameObj.height);
             }
         } else {
@@ -221,17 +221,17 @@ class Display {
         /*this.ctx.font = "60pt arcade";
         this.printText("Space compact", this.width / 2, 80);*/
 
-
     }
-
     async renderBackground(offsetX, background = "/src/assets/background/bg.svg") {
-        //dddthis.ctx.clearRect(0, 0, this.width, this.height);
-        offsetX = offsetX % this.width;
+       // this.ctx.clearRect(0, 0, this.width, this.height);
+        offsetX = offsetX % (this.width-80);
+     
         let size = 200;
-        let bg = new Background(background, this.width, this.height);
-        for (let i = 0; i < this.width * 3; i += size) {
+        let bg = new Background(background,160);
+        for (let i = 0; i < this.width*2; i += size) {
             for (let j = 0; j < this.height; j += size) {
-                this.ctx.drawImage(await bg.getDrawable(), bg.position.getX() + i + offsetX, bg.position.getY() + j,
+  
+                    this.ctx.drawImage(await bg.getDrawable(), i+offsetX, j,
                     size, size);
             }
         }

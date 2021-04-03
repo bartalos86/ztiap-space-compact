@@ -15,7 +15,7 @@ window.onload = () => {
 
     // let enemies = [new StartEnemy(), new StartEnemy(), new DefaultEnemy(), new StrongEnemy()];
     let controller = new Controller(display.getCanvas());
-    let gameManager = new GameManager(audio);
+    let gameManager = new GameManager(audio, controller);
 
     let sceneManager = new SceneManager(controller, audio, gameManager);
 
@@ -23,6 +23,8 @@ window.onload = () => {
 
     //Loop for the GUI
     async function menuLoop() {
+       // await display.clear();
+
         await display.drawScreen(sceneManager.getCurrentScene());
         await display.drawScreen(sceneManager.getGlobalScene());
 
@@ -39,10 +41,12 @@ window.onload = () => {
             delta = 1;
 
         display.setDelta(delta);
+       
 
         if (sceneManager.getCurrentSceneId() == "game") {
 
             await display.renderBackground(-timestamp / 5);
+            gameManager.update(delta);
 
 
             for (let i = 0; i < gameManager.getBullets().length; i++) {
