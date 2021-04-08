@@ -109,9 +109,6 @@ export class BaseScreen extends Observer {
         else
             document.body.style.cursor = "auto";
 
-        console.log(wasCollision);
-
-
 
     }
 

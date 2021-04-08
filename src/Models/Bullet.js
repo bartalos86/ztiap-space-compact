@@ -15,6 +15,17 @@ export class Bullet extends Sprite {
         this.position = new Vector2D(x, y);
         this.isAlive = true;
 
+        this.damage = 10;
+      
+
+    }
+
+    getDamage() {
+        return this.damage;
+    }
+
+    setOnMove(onmoveFunction) {
+        this.onmove = onmoveFunction;
     }
 
     move(delta) {
@@ -23,7 +34,12 @@ export class Bullet extends Sprite {
         } else {
             this.position.setX(this.position.getX() - this.speed/delta)
         }
+
+        if (this.onmove)
+            this.onmove();
     }
+
+
 
     getPosition() {
         return this.position;

@@ -1,6 +1,6 @@
 import { PositionHelper } from "./PosiotionHelper.js";
 import { Background } from "./Models/Background.js";
-import { SpaceshipBase } from "./Models/Spaceship.js";
+import { FireSpaceship, SpaceshipBase, SpeedSpaceship } from "./Models/Spaceship.js";
 
 
 class Display {
@@ -200,9 +200,9 @@ class Display {
                 gameObj.position.setY(this.height - gameObj.height);
             }
         } else {
-            if (gameObj.position.getX() > this.width) {
+            if (gameObj.position.getX() > this.width + 100) {
                 gameObj.destroy();
-            } else if (gameObj.position.getX() < 0) {
+            } else if (gameObj.position.getX() < 0 -100) {
                 gameObj.destroy();
             }
         }

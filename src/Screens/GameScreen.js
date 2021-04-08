@@ -21,9 +21,10 @@ export class GameScreen extends BaseScreen{
           //  let name = prompt("Name: ");
            // playerNameText.text = name;
             
-            sceneManager.getAudioManager().playMusic("background-1")
+            sceneManager.getAudioManager().playMusic("background-1");
+            sceneManager.getGameManager().startGame();
         });
-        this.addOnDeactivated(() => sceneManager.getAudioManager().stopMusic());
+        this.addOnDeactivated(() => { sceneManager.getAudioManager().stopMusic(); sceneManager.getGameManager().endGame(); });
         backButton.addOnClick(() => {
 
             if(healthWidget.getCurrentHealth() <= 0)

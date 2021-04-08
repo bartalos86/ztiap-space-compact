@@ -23,7 +23,7 @@ window.onload = () => {
 
     //Loop for the GUI
     async function menuLoop() {
-       // await display.clear();
+        // await display.clear();
 
         await display.drawScreen(sceneManager.getCurrentScene());
         await display.drawScreen(sceneManager.getGlobalScene());
@@ -41,22 +41,29 @@ window.onload = () => {
             delta = 1;
 
         display.setDelta(delta);
-       
+
 
         if (sceneManager.getCurrentSceneId() == "game") {
 
             await display.renderBackground(-timestamp / 5);
             gameManager.update(delta);
 
-
             for (let i = 0; i < gameManager.getBullets().length; i++) {
                 let bullet = gameManager.getBullets()[i];
-                bullet.move(delta);
                 await display.drawSprite(bullet);
+            }
 
-                if (!bullet.getIsAlive()) {
-                    gameManager.removeBullet(bullet);
-                }
+         
+
+            for (let i = 0; i < gameManager.getEnemies().length; i++) {
+                let enemy = gameManager.getEnemies()[i];
+               // enemy.move(delta);
+                await display.drawSprite(enemy);
+            }
+
+            for (let i = 0; i < gameManager.getEnemyBullets().length; i++) {
+                let bullet = gameManager.getEnemyBullets()[i];
+                await display.drawSprite(bullet);
             }
 
             await display.drawSprite(gameManager.getPlayer());
