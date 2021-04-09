@@ -14,8 +14,17 @@ export class Sprite{
 
     getAnimation() { return this.animation }
 
-    
+    setDrawable(imagePath) {
+        let img = new Image(this.width, this.height);
+        this.imagePath = imagePath;
+        img.src = this.imagePath;
+        this.drawable = img;
+    }
 
+    setAnimation(animation2D) {
+        this.animation = animation2D;
+    }
+    
     setRotation(rot) {
         this.rotation = rot;
     }

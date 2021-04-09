@@ -34,3 +34,17 @@ export class Animation2D{
     }
 
 }
+
+export class EffectAnimation{
+
+    constructor(imagePath, timeout = 250, animation2D = null) {
+        this.imagePath = imagePath;
+        this.timeout = timeout;
+        this.animation2D = animation2D;
+    }
+
+    getAnimation2D() {
+        return this.animation2D;
+    }
+
+}

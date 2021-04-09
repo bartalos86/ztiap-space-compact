@@ -2,7 +2,7 @@ import { Vector2D } from "../BaseTypes/Vector.js";
 import { Sprite } from "./Sprite.js";
 
 export class Bullet extends Sprite {
-    constructor(x, y, owner, speed = 25) {
+    constructor(x, y, owner, speed = 35) {
         let path = "/src/assets/sprites/projectile_e.png";
 
         if (owner == "player") 

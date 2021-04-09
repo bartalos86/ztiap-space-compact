@@ -89,9 +89,9 @@ export class SceneManager {
     }
 
     getScene(sceneId) {
-        for (let i = 0; i < this.currentScene.length; i++) {
-            if (this.currentScene[i] == sceneId) {
-                return this.currentScene[i];
+        for (let i = 0; i < this.sceneCollection.length; i++) {
+            if (this.sceneCollection[i].sceneId == sceneId) {
+                return this.sceneCollection[i];
             }
         }
     }

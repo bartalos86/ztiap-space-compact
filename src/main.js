@@ -18,12 +18,13 @@ window.onload = () => {
     let gameManager = new GameManager(audio, controller);
 
     let sceneManager = new SceneManager(controller, audio, gameManager);
+    gameManager.setGameScene(sceneManager.getScene("game"));
 
     controller.addSubject(gameManager);
 
     //Loop for the GUI
     async function menuLoop() {
-        // await display.clear();
+
 
         await display.drawScreen(sceneManager.getCurrentScene());
         await display.drawScreen(sceneManager.getGlobalScene());
@@ -34,14 +35,14 @@ window.onload = () => {
 
 
     //Main game loop
-    async function loop(timestamp) {
+    async function gameLoop(timestamp) {
         var delta = timestamp - lastRender;
+        // await display.clear();
 
         if (delta == 'undefined')
             delta = 1;
 
         display.setDelta(delta);
-
 
         if (sceneManager.getCurrentSceneId() == "game") {
 
@@ -53,11 +54,11 @@ window.onload = () => {
                 await display.drawSprite(bullet);
             }
 
-         
+
 
             for (let i = 0; i < gameManager.getEnemies().length; i++) {
                 let enemy = gameManager.getEnemies()[i];
-               // enemy.move(delta);
+                // enemy.move(delta);
                 await display.drawSprite(enemy);
             }
 
@@ -67,14 +68,18 @@ window.onload = () => {
             }
 
             await display.drawSprite(gameManager.getPlayer());
+
+
         }
 
+
+
         lastRender = timestamp;
-        window.requestAnimationFrame(loop);
+        window.requestAnimationFrame(gameLoop);
     }
 
     var lastRender = 0;
-    window.requestAnimationFrame(loop);
+    window.requestAnimationFrame(gameLoop);
     window.requestAnimationFrame(menuLoop);
 
 

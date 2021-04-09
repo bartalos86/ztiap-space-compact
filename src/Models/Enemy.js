@@ -1,13 +1,13 @@
+import { EffectAnimation } from "../BaseTypes/Animation.js";
 import { AdvancedTimer, Timer } from "../BaseTypes/Timer.js";
 import { Vector2D } from "../BaseTypes/Vector.js";
-import { Sprite } from "./Sprite.js";
+import { GameObject } from "./GameObject.js";
 
-export class EnemyBase extends Sprite {
+export class EnemyBase extends GameObject {
 
     constructor(sprite, size, health, maxVMovement, vSpeed) {
         super(sprite, size, size);
-
-        this.position = new Vector2D(1300, Math.random() * 650 + 50);
+        this.position = new Vector2D(1300, Math.random() * 150 + 150);
         this.maxVerticalMovement = maxVMovement;
         this.currentVMovement = 0;
         this.directionV = 1;
@@ -16,11 +16,16 @@ export class EnemyBase extends Sprite {
         this.isAlive = true;
 
         this.gunPositions = [];
-        this.agression = Math.random()*50;
+        this.agression = Math.random() * 50;
+        this.speed = this.agression % 35;
 
         this.agressionCooldown = new Timer((100-this.agression) * 500);
         this.fireCooldown = new Timer((100 - this.agression) * 500)
     }
+
+    /*setHitImage(imagePath, showTime = 200) {
+       
+    }*/
 
     
     setAgression(agression) {
@@ -47,10 +52,15 @@ export class EnemyBase extends Sprite {
 
         this.health -= amout;
         if (this.health <= 0) {
-            if (this.audioManager)
+            this.die();
+        }
+            this.playAnimation("hit");
+    }
+
+    die() {
+        if (this.audioManager)
                 this.audioManager.playEffect("explosion");
             this.isAlive = false;
-        }
     }
 
     shoot() {
@@ -73,7 +83,7 @@ export class EnemyBase extends Sprite {
     }
 
     move(delta) {
-        if (this.currentVMovement >= this.maxVerticalMovement || this.currentVMovement <= -this.currentVMovement) {
+        if (this.currentVMovement >= this.maxVerticalMovement || this.currentVMovement <= -this.maxVerticalMovement) {
             this.directionV *= -1;
         }
 
@@ -81,7 +91,7 @@ export class EnemyBase extends Sprite {
 
         this.currentVMovement += Math.round(this.speedV * this.directionV / delta);
 
-        this.position.setX(this.position.getX() - 16 / delta);
+        this.position.setX(this.position.getX() - this.speed / delta);
 
         /* if (this.position.getX() + this.width < 0)
              this.isAlive = false;*/
@@ -99,8 +109,9 @@ export class EnemyBase extends Sprite {
 export class DefaultEnemy extends EnemyBase {
 
     constructor() {
-        super("/src/assets/sprites/enemy1.png", 65, 100, 20, 0);
+        super("/src/assets/sprites/enemy1.png", 65, 100, 200, 10);
         this.gunPositions.push(new Vector2D(0, 65 / 2 - 8));
+        this.addAnimation("hit", new EffectAnimation("/src/assets/sprites/enemy1-hit.png"))
     }
 
 }
@@ -108,8 +119,10 @@ export class DefaultEnemy extends EnemyBase {
 export class StrongEnemy extends EnemyBase {
 
     constructor() {
-        super("/src/assets/sprites/enemy-stronger.png", 65, 200, 50, 0);
+        super("/src/assets/sprites/enemy-stronger.png", 65, 200, 50, 10);
         this.gunPositions.push(new Vector2D(0, 65 / 2 - 8));
+        this.addAnimation("hit", new EffectAnimation("/src/assets/sprites/enemy-stronger-hit.png"))
+
     }
 
 
@@ -121,6 +134,8 @@ export class StarEnemy extends EnemyBase {
     constructor() {
         super("/src/assets/sprites/enemy2.png", 60, 200, 100, 0);
         this.gunPositions.push(new Vector2D(0, 60 / 2 - 8));
+        this.addAnimation("hit", new EffectAnimation("/src/assets/sprites/enemy2-hit.png"))
+
     }
 
 }
