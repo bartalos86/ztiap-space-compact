@@ -16,7 +16,31 @@ export class Timer {
     }
 }
 
-export class AdvancedTimer extends Timer {
+export class OnTimer extends Timer{
+    constructor(interval, onInterval) {
+        super(interval);
+        this.onInterval = onInterval;
+        this.isInProgress = false;;
+       
+    }
+
+    activate() {
+        if (this.timeElapsed) {
+            this.timeElapsed = false;
+            setTimeout(() => this.timeElapsed = true, this.interval);
+            this.isInProgress = true;
+            setInterval(() => this.isInProgress = false, this.onInterval);
+            return true;
+        }
+
+       
+        return this.isInProgress;
+    }
+}
+
+
+//TODO: Ezt megcsinani
+export class BulletTimer extends Timer {
     constructor(interval, count) {
         super(interval);
         this.maxCount = count;

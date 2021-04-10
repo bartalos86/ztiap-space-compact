@@ -21,13 +21,18 @@ export class GameOverScreen extends BaseScreen {
 
         this.addOnActivated(() => sceneManager.getAudioManager().playEffect("gameover"));
 
-        let scoreText = new Text("Your score: 200", "center", 430, "20pt");
+        this.scoreText = new Text("Your score: 200", "center", 430, "20pt");
 
         let mainMenuBtn = new TextButton("center", 520, 250, 75, "Main menu");
 
         mainMenuBtn.addOnClick(() => sceneManager.setScene("main-menu"));
 
         this.addSubject(mainMenuBtn);
-        this.widgets = [gameText, overText, planetDecor, marsDecor, scoreText, spaceship, mainMenuBtn];
+        this.widgets = [gameText, overText, planetDecor, marsDecor, this.scoreText, spaceship, mainMenuBtn];
+    }
+
+    setScore(score) {
+        score = Math.round(score);
+        this.scoreText.setText(`Your score: ${score}`);
     }
 }

@@ -17,7 +17,7 @@ export class GameScreen extends BaseScreen {
         let hudBg = new ImageWidget("/src/assets/ui/game-hud-bg.png", "center", -2, 1300, 79);
 
         let playerNameText = new Text("player1", 120, 55, "35pt", "arcade");
-        let scoreText = new Text("Score: 100", 1100, 55, "35pt", "arcade");
+        this.scoreText = new Text("Score: 100", 1100, 55, "35pt", "arcade");
 
         this.healthWidget = new HealthWidget(200, "bottom", 46, 40);
        
@@ -39,7 +39,12 @@ export class GameScreen extends BaseScreen {
 
         this.addSubject(backButton);
 
-        this.widgets = [hudBg, playerNameText, scoreText, backButton, this.healthWidget, this.healthBar];
+        this.widgets = [hudBg, playerNameText, this.scoreText, backButton, this.healthWidget, this.healthBar];
+    }
+
+    setScore(score) {
+        score = Math.round(score);
+        this.scoreText.setText(`Score: ${score}`);
     }
 
     setHealth(health) {
@@ -57,8 +62,10 @@ export class GameScreen extends BaseScreen {
     decreaseLife() {
         this.healthWidget.setHealth(this.healthWidget.getCurrentHealth() - 1);
 
-        if (this.healthWidget.getCurrentHealth() <= 0)
+        if (this.healthWidget.getCurrentHealth() <= 0) {
+            this.sceneManager.getScene("game-over").setScore(this. sceneManager.getGameManager().score)
             this.sceneManager.setScene("game-over");
+        }
 
         return this.healthWidget.getCurrentHealth();
     }

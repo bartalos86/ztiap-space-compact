@@ -1,13 +1,13 @@
 import { EffectAnimation } from "../BaseTypes/Animation.js";
-import { AdvancedTimer, Timer } from "../BaseTypes/Timer.js";
+import { OnTimer,Timer } from "../BaseTypes/Timer.js";
 import { Vector2D } from "../BaseTypes/Vector.js";
 import { GameObject } from "./GameObject.js";
 
 export class EnemyBase extends GameObject {
 
-    constructor(sprite, size, health, maxVMovement, vSpeed) {
+    constructor(sprite, size, health, maxVMovement, vSpeed, maxAgression = 50) {
         super(sprite, size, size);
-        this.position = new Vector2D(1300, Math.random() * 150 + 150);
+        this.position = new Vector2D(1280, 720/2);
         this.maxVerticalMovement = maxVMovement;
         this.currentVMovement = 0;
         this.directionV = 1;
@@ -16,11 +16,12 @@ export class EnemyBase extends GameObject {
         this.isAlive = true;
 
         this.gunPositions = [];
-        this.agression = Math.random() * 50;
+        this.agression = Math.random() * maxAgression;
         this.speed = this.agression % 35;
+        this.agressionDelta = 0;
 
         this.agressionCooldown = new Timer((100-this.agression) * 500);
-        this.fireCooldown = new Timer((100 - this.agression) * 500)
+        this.fireCooldown = new OnTimer((100 - this.agression) * 500, this.agression*500)
     }
 
     /*setHitImage(imagePath, showTime = 200) {
@@ -29,12 +30,26 @@ export class EnemyBase extends GameObject {
 
     
     setAgression(agression) {
+        agression += this.agressionDelta;
         if (agression <= 100) {
-            this.agression = Math.random()*agression;
-            this.agressionCooldown = new Timer((10 - this.agression) * 500);
-            this.fireCooldown = new Timer((20 - this.agression) * 1000)
+            this.agression = Math.random() * agression;
+            this.speed = (this.agression + 5) % 50;
+            
+           // this.agressionCooldown = new OnTimer((100-this.agression) * 500,this.agression*10);
+           this.agressionCooldown = new Timer((100-this.agression) * 500);
+
+            this.fireCooldown = new OnTimer((100 - this.agression) * 500, this.agression*500)
+        //this.fireCooldown = new Timer((100 - this.agression) * 1000)
 
         }
+    }
+
+    getAgression() {
+        return this.agression;
+    }
+
+    getIsAlive() {
+        return this.isAlive;
     }
 
     getAgression() {
@@ -109,7 +124,7 @@ export class EnemyBase extends GameObject {
 export class DefaultEnemy extends EnemyBase {
 
     constructor() {
-        super("/src/assets/sprites/enemy1.png", 65, 100, 200, 10);
+        super("/src/assets/sprites/enemy1.png", 65, 75, Math.random() * (700/4) +25, 10);
         this.gunPositions.push(new Vector2D(0, 65 / 2 - 8));
         this.addAnimation("hit", new EffectAnimation("/src/assets/sprites/enemy1-hit.png"))
     }
@@ -118,11 +133,11 @@ export class DefaultEnemy extends EnemyBase {
 
 export class StrongEnemy extends EnemyBase {
 
-    constructor() {
-        super("/src/assets/sprites/enemy-stronger.png", 65, 200, 50, 10);
+    constructor(maxAgression = 50) {
+        super("/src/assets/sprites/enemy-stronger.png", 65, 150, Math.random() * (150) + 25, 10,maxAgression);
         this.gunPositions.push(new Vector2D(0, 65 / 2 - 8));
         this.addAnimation("hit", new EffectAnimation("/src/assets/sprites/enemy-stronger-hit.png"))
-
+        this.agressionDelta = 5;
     }
 
 
@@ -131,11 +146,15 @@ export class StrongEnemy extends EnemyBase {
 
 export class StarEnemy extends EnemyBase {
 
-    constructor() {
-        super("/src/assets/sprites/enemy2.png", 60, 200, 100, 0);
-        this.gunPositions.push(new Vector2D(0, 60 / 2 - 8));
+    constructor(maxAgression = 50) {
+        super("/src/assets/sprites/enemy2.png", 60, 200, 100, 5, maxAgression);
+        this.gunPositions.push(new Vector2D(0, 30 - 8));
+        this.gunPositions.push(new Vector2D(30, 0));
+        this.gunPositions.push(new Vector2D(30, 60-8));
         this.addAnimation("hit", new EffectAnimation("/src/assets/sprites/enemy2-hit.png"))
+        this.agressionDelta = 20;
 
+        this.position = new Vector2D(1280, Math.random()*600+100);
     }
 
 }

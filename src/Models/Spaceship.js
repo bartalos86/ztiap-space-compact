@@ -1,6 +1,6 @@
 import { Vector2D } from "../BaseTypes/Vector.js";
 import { Animation2D, EffectAnimation } from "../BaseTypes/Animation.js";
-import { Timer } from "../BaseTypes/Timer.js";
+import { OnTimer, Timer } from "../BaseTypes/Timer.js";
 import { GameObject } from "./GameObject.js";
 
 export class SpaceshipBase extends GameObject {
@@ -101,12 +101,16 @@ export class SpaceshipBase extends GameObject {
                 this.gameManager.spawnBullet("player", calculated);
 
                 
-          
             }
             
     
         }
             
+    }
+
+    activateAbility() {
+        if (this.ability)
+            this.ability();
     }
 
 }
@@ -123,8 +127,26 @@ export class FireSpaceship extends SpaceshipBase {
         this.gunPositions.push(new Vector2D(80 - 40, 80 - 16));
         this.addAnimation("hit", new EffectAnimation("/src/assets/sprites/spaceship-sprite-hit.png"));
 
+        this.ability = () => this.shootRockets();
+
+        this.rocketTimer = new Timer(10000);
 
     }
+
+    shootRockets() {
+
+        if(this.rocketTimer.activate())
+        for (let i = 0; i < this.gunPositions.length; i++) {
+            let gun = this.gunPositions[i];
+            let pos = this.position;
+            let calculated = { x: pos.getX() + gun.getX(), y: pos.getY() + gun.getY()-5 };
+            this.gameManager.spawnRocket(calculated);
+        }
+
+            
+    }
+
+
 }
 
 export class SpeedSpaceship extends SpaceshipBase {
@@ -137,6 +159,20 @@ export class SpeedSpaceship extends SpaceshipBase {
 
         this.gunPositions.push(new Vector2D(80, 80 / 2 - 8));
         this.addAnimation("hit", new EffectAnimation("/src/assets/sprites/spaceship_speed-sprite-hit.png"));
-        
+        this.laserTimer = new OnTimer(10000,5000);
+      
+        this.ability = () => this.shootLaser();
     }
+
+    shootLaser() {
+        if(this.laserTimer.activate())
+        for (let i = 0; i < this.gunPositions.length; i++) {
+            let gun = this.gunPositions[i];
+            let pos = this.position;
+            let calculated = { x: pos.getX() + gun.getX(), y: pos.getY() + gun.getY()+2 };
+            this.gameManager.spawnLaser(calculated);
+        }
+    }
+
+
 }

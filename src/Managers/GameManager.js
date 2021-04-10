@@ -1,6 +1,6 @@
 import { Observer } from "../BaseTypes/Observer.js";
 import { Timer } from "../BaseTypes/Timer.js";
-import { Bullet } from "../Models/Bullet.js";
+import { Bullet, Laser, Rocket } from "../Models/Bullet.js";
 import { DefaultEnemy, StarEnemy, StrongEnemy } from "../Models/Enemy.js";
 import { FireSpaceship, SpeedSpaceship } from "../Models/Spaceship.js";
 
@@ -16,6 +16,7 @@ export class GameManager extends Observer {
         this.enemies = [];
 
         this.progress = 0;
+        this.score = 0;
         this.isGameInProgress = false;
 
         // setInterval(() => { if (this.isGameInProgress) this.processGameTime(); }, 500);
@@ -29,6 +30,8 @@ export class GameManager extends Observer {
 
     processGameTime() {
         this.progress++;
+        this.score += 2;
+        this.updateScore();
 
         if (this.progress % 5 == 0)
             this.spawnEnemy("base");
@@ -38,8 +41,8 @@ export class GameManager extends Observer {
                 this.spawnEnemy("strong");
         }
 
-        if (this.progress > 30) {
-            if (this.progress % 20 == 0)
+        if (this.progress > 5) {
+            if (this.progress % 10 == 0)
                 this.spawnEnemy("star");
         }
     }
@@ -52,6 +55,8 @@ export class GameManager extends Observer {
             case "strong": enemy = new StrongEnemy(); break;
             case "star": enemy = new StarEnemy(); break;
         }
+
+        enemy.setAgression(this.progress / 10);
 
         
         enemy.setupManagers(this, this.audioManager)
@@ -93,6 +98,11 @@ export class GameManager extends Observer {
 
         if (keys["Space"]) {
             this.player.shoot();
+
+        }
+
+        if (keys["KeyZ"]) {
+            this.player.activateAbility();
         }
     }
 
@@ -122,8 +132,12 @@ export class GameManager extends Observer {
             enemy.move(delta);
 
             //TODO: Ezt rendesen megcsinalni
-            if (Math.random() * 100 > 50)
+            if (Math.random() * 100 > (100-enemy.agression))
                 enemy.shoot();
+            
+            /*if (enemy.fireCooldown.activate()) {
+                enemy.shoot();
+            }*/
 
 
 
@@ -157,13 +171,22 @@ export class GameManager extends Observer {
             for (let i = 0; i < this.getBullets().length; i++) {
                 let bullet = this.getBullets()[i];
 
-                if (bullet.position.getX() > enemy.position.getX() && bullet.position.getX() < enemy.position.getX() + enemy.width &&
-                    bullet.position.getY() > enemy.position.getY() && bullet.position.getY() < enemy.position.getY() + enemy.height) {
-                    bullet.destroy();
-                    this.removeBullet(bullet);
+                if (bullet.position.getX() + bullet.width > enemy.position.getX() && bullet.position.getX() < enemy.position.getX() + enemy.width &&
+                    bullet.position.getY() + bullet.height > enemy.position.getY() && bullet.position.getY() < enemy.position.getY() + enemy.height) {
+                    
+                    if (bullet.type != "laser") {
+                        bullet.destroy();
+                        this.removeBullet(bullet);
+                    }
+                  
 
                     enemy.hit(bullet.getDamage());
                 }
+            }
+
+            if (!enemy.getIsAlive()) {
+                this.score += enemy.agression + 20;
+                this.updateScore();
             }
 
             let playerCollision = (this.player.position.getX() + this.player.width - 20 >= enemy.position.getX() && this.player.position.getX() < enemy.position.getX() + enemy.width) &&
@@ -187,8 +210,10 @@ export class GameManager extends Observer {
             this.player.revive();
            
         }
+    }
 
-       
+    updateScore() {
+        this.gameScene.setScore(this.score);
     }
 
     update(delta) {
@@ -211,6 +236,7 @@ export class GameManager extends Observer {
         this.isGameInProgress = true;
         this.progress = 0;
         this.gameScene.resetLives();
+        this.score = 0;
         // console.log("game started");
     }
 
@@ -242,6 +268,10 @@ export class GameManager extends Observer {
 
         if (index == -1) {
             index = this.enemyBullets.indexOf(bullet);
+
+            if (index == -1)
+                return;
+
             this.enemyBullets.splice(index, 1);
 
             if (this.enemyBullets.length <= 1)
@@ -279,6 +309,20 @@ export class GameManager extends Observer {
             this.enemyBullets.push(new Bullet(position.x, position.y, owner));
 
         }
+    }
+
+    spawnRocket(position) {
+        this.bullets.push(new Rocket(position.x, position.y));
+    }
+
+    spawnLaser(position) {
+
+        if (this.prevLaser)
+            this.removeBullet(this.prevLaser);
+
+        let laser = new Laser(position.x, position.y);
+        this.prevLaser = laser;
+        this.bullets.push(laser);
     }
 
     notify(event) {
