@@ -125,7 +125,8 @@ class Display {
 
     async renderAnimation(IDrawable, animation, position, size) {
         animation.setDelta(this.delta);
-        this.ctx.drawImage(await IDrawable.getDrawable(), animation.getNextAnimationFramePos().start, 0, animation.getFrameWidth(), animation.getFrameHeight(),
+        let nextFrame = animation.getNextAnimationFramePos();
+        this.ctx.drawImage(await IDrawable.getDrawable(), nextFrame.xstart, nextFrame.ystart, animation.getFrameWidth(), animation.getFrameHeight(),
             position.x, position.y,
             size.width, size.height);
     }

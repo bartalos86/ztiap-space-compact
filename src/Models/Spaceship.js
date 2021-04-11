@@ -7,6 +7,7 @@ export class SpaceshipBase extends GameObject {
 
     constructor(sprite, size, animation, cooldown = 250) {
         super(sprite, size, size, animation);
+        this.type = "base";
         this.position = new Vector2D(100, 100);
         this.speed = 50;
         this.firepower = 20;
@@ -119,7 +120,8 @@ export class FireSpaceship extends SpaceshipBase {
 
     constructor() {
         let animation = new Animation2D(32, 32, 5, 0.3*16);
-        super("/src/assets/sprites/spaceship-sprite.png", 80, animation,220);
+        super("/src/assets/sprites/spaceship-sprite.png", 80, animation, 220);
+        this.type = "fire";
         this.speed = 40;
         this.firepower = 80;
 
@@ -152,8 +154,10 @@ export class FireSpaceship extends SpaceshipBase {
 export class SpeedSpaceship extends SpaceshipBase {
 
     constructor() {
-        let animation = new Animation2D(32, 32, 5, 0.3*16,300);
-        super("/src/assets/sprites/spaceship_speed-sprite.png", 80, animation);
+        let animation = new Animation2D(32, 32, 5, 0.3*16);
+        super("/src/assets/sprites/spaceship_speed-sprite.png", 80, animation, 300);
+        this.type = "speed";
+        
         this.speed = 70;
         this.firepower = 55;
 

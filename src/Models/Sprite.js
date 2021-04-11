@@ -23,6 +23,13 @@ export class Sprite{
 
     setAnimation(animation2D) {
         this.animation = animation2D;
+
+        /*if(this.animation && this.animation.keepSize != 'undefined')
+        if (animation2D.keepSize === false) {
+            this.height = animation2D.spHeight;
+            this.width = animation2D.spWidth;
+            
+        }*/
     }
     
     setRotation(rot) {

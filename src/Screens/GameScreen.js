@@ -1,6 +1,7 @@
+import { Animation2D } from "../BaseTypes/Animation.js";
 import { Button, ToggleButton } from "../Controls/Button.js";
 import { HealthWidget } from "../Controls/Health.js";
-import { ImageWidget } from "../Controls/Image.js";
+import { AnimatedImageWidget, ImageWidget } from "../Controls/Image.js";
 import { DefaultProgressbar, Progressbar } from "../Controls/ProgressBar.js";
 import { Text } from "../Controls/Text.js";
 import { BaseScreen } from "./BaseScreen.js";
@@ -22,6 +23,8 @@ export class GameScreen extends BaseScreen {
         this.healthWidget = new HealthWidget(200, "bottom", 46, 40);
        
         this.healthBar = new Progressbar("/src/assets/ui/progress-fg-gr-tr.png", "/src/assets/ui/progress-bg-tr.png", "center", 0, 60, 4);
+
+        let explosion = new AnimatedImageWidget("/src/assets/sprites/explosion.png", 100, 100, 100, 100, new Animation2D(100, 100, 10, 0.3*16, 6));
 
         this.addOnActivated(() => {
             //  let name = prompt("Name: ");
@@ -63,7 +66,10 @@ export class GameScreen extends BaseScreen {
         this.healthWidget.setHealth(this.healthWidget.getCurrentHealth() - 1);
 
         if (this.healthWidget.getCurrentHealth() <= 0) {
-            this.sceneManager.getScene("game-over").setScore(this. sceneManager.getGameManager().score)
+            let gameOverScene = this.sceneManager.getScene("game-over");
+            let gameManager = this.sceneManager.getGameManager();
+            gameOverScene.setScore(gameManager.score);
+            gameOverScene.setSpaceship(gameManager.player.type);
             this.sceneManager.setScene("game-over");
         }
 

@@ -168,6 +168,9 @@ export class GameManager extends Observer {
         for (let i = 0; i < this.getEnemies().length; i++) {
             let enemy = this.getEnemies()[i];
 
+            if (!enemy.hasCollision)
+                continue;
+
             for (let i = 0; i < this.getBullets().length; i++) {
                 let bullet = this.getBullets()[i];
 
