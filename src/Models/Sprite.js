@@ -9,7 +9,15 @@ export class Sprite{
         this.drawable = img;
 
         this.animation = animation;
-       
+        this.opacity = 1;
+    }
+
+    setOpacity(opacity) {
+        this.opacity = opacity;
+    }
+
+    getOpacity() {
+        return this.opacity;
     }
 
     getAnimation() { return this.animation }

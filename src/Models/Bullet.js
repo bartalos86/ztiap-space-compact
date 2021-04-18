@@ -44,7 +44,7 @@ export class Bullet extends ProjectileBase {
         if (owner == "player")
             path = "/src/assets/sprites/projectile.png";
 
-        super(path, x, y, 8 * 2, 8 * 2, speed, damage);
+        super(path, x, y, 8 * 2.4, 8 * 2.4, speed, damage);
         this.owner = owner;
 
 

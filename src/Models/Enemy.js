@@ -140,7 +140,7 @@ export class EnemyBase extends GameObject {
 export class DefaultEnemy extends EnemyBase {
 
     constructor() {
-        super("/src/assets/sprites/enemy1.png", 65, 75, Math.random() * (700/4) +25, 10);
+        super("/src/assets/sprites/enemy1.png", 65*1.15, 75*1.15, Math.random() * (700/4) +25, 10);
         this.gunPositions.push(new Vector2D(0, 65 / 2 - 8));
         this.addAnimation("hit", new EffectAnimation("/src/assets/sprites/enemy1-hit.png"))
         this.initializeExplosionAnimation();
@@ -151,7 +151,7 @@ export class DefaultEnemy extends EnemyBase {
 export class StrongEnemy extends EnemyBase {
 
     constructor(maxAgression = 50) {
-        super("/src/assets/sprites/enemy-stronger.png", 65, 150, Math.random() * (150) + 25, 10,maxAgression);
+        super("/src/assets/sprites/enemy-stronger.png", 65*1.15, 150*1.15, Math.random() * (150) + 25, 10,maxAgression);
         this.gunPositions.push(new Vector2D(0, 65 / 2 - 8));
         this.addAnimation("hit", new EffectAnimation("/src/assets/sprites/enemy-stronger-hit.png"))
         this.agressionDelta = 5;
@@ -166,7 +166,7 @@ export class StrongEnemy extends EnemyBase {
 export class StarEnemy extends EnemyBase {
 
     constructor(maxAgression = 50) {
-        super("/src/assets/sprites/enemy2.png", 60, 200, 100, 5, maxAgression);
+        super("/src/assets/sprites/enemy2.png", 60*1.15, 200*1.15, 100, 5, maxAgression);
         this.gunPositions.push(new Vector2D(0, 30 - 8));
         this.gunPositions.push(new Vector2D(30, 0));
         this.gunPositions.push(new Vector2D(30, 60-8));

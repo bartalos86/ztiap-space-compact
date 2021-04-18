@@ -203,13 +203,14 @@ class Display {
         } else {
             if (gameObj.position.getX() > this.width + 100) {
                 gameObj.destroy();
-            } else if (gameObj.position.getX() < 0 -100) {
+            } else if (gameObj.position.getX() < 0 -400) {
                 gameObj.destroy();
             }
         }
        
         //TODO: Separate this
         let animation = gameObj.getAnimation();
+        this.ctx.globalAlpha = gameObj.getOpacity();
 
         if (animation) {
             await this.renderAnimation(gameObj, animation, { x: gameObj.position.getX(), y: gameObj.position.getY() },

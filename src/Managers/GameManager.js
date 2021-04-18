@@ -2,6 +2,7 @@ import { Observer } from "../BaseTypes/Observer.js";
 import { Timer } from "../BaseTypes/Timer.js";
 import { Bullet, Laser, Rocket } from "../Models/Bullet.js";
 import { DefaultEnemy, StarEnemy, StrongEnemy } from "../Models/Enemy.js";
+import { Planet } from "../Models/Planet.js";
 import { FireSpaceship, SpeedSpaceship } from "../Models/Spaceship.js";
 
 export class GameManager extends Observer {
@@ -14,6 +15,7 @@ export class GameManager extends Observer {
         this.bullets = [];
         this.enemyBullets = [];
         this.enemies = [];
+        this.planets = [];
 
         this.progress = 0;
         this.score = 0;
@@ -45,6 +47,17 @@ export class GameManager extends Observer {
             if (this.progress % 10 == 0)
                 this.spawnEnemy("star");
         }
+
+        if (Math.random() * 1000 < 10) {
+          
+
+            this.spawnPlanet()
+        }
+    }
+
+    spawnPlanet() {
+        let size = Math.random() * 150 + 150; 
+        this.planets.push(new Planet(size));
     }
 
     spawnEnemy(type) {
@@ -56,7 +69,7 @@ export class GameManager extends Observer {
             case "star": enemy = new StarEnemy(); break;
         }
 
-        enemy.setAgression(this.progress / 10);
+        enemy.setAgression(this.progress / 5);
 
         
         enemy.setupManagers(this, this.audioManager)
@@ -103,6 +116,20 @@ export class GameManager extends Observer {
 
         if (keys["KeyZ"]) {
             this.player.activateAbility();
+        }
+    }
+
+    updatePlanets(delta) {
+        for (let i = 0; i < this.planets.length; i++) {
+            let planet = this.planets[i];
+
+            if (!planet.isAlive) {
+                this.removePlanet(planet);
+                
+            }
+
+            planet.move(delta);
+
         }
     }
 
@@ -226,6 +253,7 @@ export class GameManager extends Observer {
         this.updateEnemies(delta);
         this.checkCollisionsEnemy();
         this.checkCollisionsPlayer();
+        this.updatePlanets(delta);
 
         if (this.isGameInProgress) {
             if (this.spawnTimer.activate())
@@ -247,6 +275,7 @@ export class GameManager extends Observer {
         this.bullets = [];
         this.enemyBullets = [];
         this.enemies = [];
+        this.planets = [];
         this.isGameInProgress = false;
     }
 
@@ -264,6 +293,22 @@ export class GameManager extends Observer {
 
     getEnemies() {
         return this.enemies;
+    }
+
+    getPlanets() {
+        return this.planets;
+    }
+
+    removePlanet(planet) {
+        let index = this.planets.indexOf(planet);
+        console.log("planet deleted");
+
+        if (this.planets.length <= 1)
+            this.planets = [];
+        else
+        this.planets.splice(index, 1);
+
+        
     }
 
     removeBullet(bullet) {

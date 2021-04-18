@@ -49,12 +49,16 @@ window.onload = () => {
             await display.renderBackground(-timestamp / 5);
             gameManager.update(delta);
 
+            for (let i = 0; i < gameManager.getPlanets().length; i++){
+                let planet = gameManager.getPlanets()[i];
+                await display.drawSprite(planet);
+            }
+            
+
             for (let i = 0; i < gameManager.getBullets().length; i++) {
                 let bullet = gameManager.getBullets()[i];
                 await display.drawSprite(bullet);
             }
-
-
 
             for (let i = 0; i < gameManager.getEnemies().length; i++) {
                 let enemy = gameManager.getEnemies()[i];
@@ -66,6 +70,10 @@ window.onload = () => {
                 let bullet = gameManager.getEnemyBullets()[i];
                 await display.drawSprite(bullet);
             }
+
+          
+
+            
 
             await display.drawSprite(gameManager.getPlayer());
 
