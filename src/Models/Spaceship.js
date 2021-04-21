@@ -160,6 +160,7 @@ export class SpeedSpaceship extends SpaceshipBase {
         
         this.speed = 70;
         this.firepower = 55;
+        this.health = 125;
 
         this.gunPositions.push(new Vector2D(80, 80 / 2 - 8));
         this.addAnimation("hit", new EffectAnimation("/src/assets/sprites/spaceship_speed-sprite-hit.png"));

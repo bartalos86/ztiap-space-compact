@@ -39,12 +39,12 @@ export class GameManager extends Observer {
             this.spawnEnemy("base");
 
         if (this.progress > 20) {
-            if (this.progress % 10 == 0)
+            if (this.progress % 15 == 0)
                 this.spawnEnemy("strong");
         }
 
-        if (this.progress > 5) {
-            if (this.progress % 10 == 0)
+        if (this.progress > 50) {
+            if (this.progress % 35 == 0)
                 this.spawnEnemy("star");
         }
 
@@ -69,7 +69,7 @@ export class GameManager extends Observer {
             case "star": enemy = new StarEnemy(); break;
         }
 
-        enemy.setAgression(this.progress / 5);
+        enemy.setAgression(this.progress / 15);
 
         
         enemy.setupManagers(this, this.audioManager)
@@ -159,7 +159,8 @@ export class GameManager extends Observer {
             enemy.move(delta);
 
             //TODO: Ezt rendesen megcsinalni
-            if (Math.random() * 100 > (100-enemy.agression))
+           //if (Math.random() * 100 > (100-enemy.agression))
+            if(enemy.fireCooldown.activate())
                 enemy.shoot();
             
             /*if (enemy.fireCooldown.activate()) {
@@ -314,7 +315,7 @@ export class GameManager extends Observer {
     removeBullet(bullet) {
         let index = this.bullets.indexOf(bullet);
 
-        if (index == -1) {
+        if (index < 0) {
             index = this.enemyBullets.indexOf(bullet);
 
             if (index == -1)
@@ -326,14 +327,15 @@ export class GameManager extends Observer {
                 this.enemyBullets = [];
 
         } else {
-            this.bullets.splice(index, 1);
+           this.bullets.splice(index, 1);
+            
 
-            if (this.bullets.length <= 1)
+            if (this.bullets.length < 1)
                 this.bullets = [];
 
         }
 
-        // console.log("bullet count: " + index);
+        // console.log(bullet);
     }
 
     removeEnemy(enemy) {

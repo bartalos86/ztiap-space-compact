@@ -28,7 +28,7 @@ export class Planet extends Sprite {
 
 
         this.position = new Vector2D(1280, y);
-        this.speed = (300- size) / 6;
+        this.speed = (300- size) / 5;
 
         this.setOpacity(1);
     }

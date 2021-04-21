@@ -46,6 +46,7 @@ export class Bullet extends ProjectileBase {
 
         super(path, x, y, 8 * 2.4, 8 * 2.4, speed, damage);
         this.owner = owner;
+        this.id = Date.now();
 
 
     }
