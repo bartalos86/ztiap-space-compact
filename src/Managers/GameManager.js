@@ -1,5 +1,6 @@
 import { Observer } from "../BaseTypes/Observer.js";
 import { Timer } from "../BaseTypes/Timer.js";
+import { Boss } from "../Models/Boss.js";
 import { Bullet, Laser, Rocket } from "../Models/Bullet.js";
 import { DefaultEnemy, StarEnemy, StrongEnemy } from "../Models/Enemy.js";
 import { Planet } from "../Models/Planet.js";
@@ -20,6 +21,7 @@ export class GameManager extends Observer {
         this.progress = 0;
         this.score = 0;
         this.isGameInProgress = false;
+        this.boss = null;
 
         // setInterval(() => { if (this.isGameInProgress) this.processGameTime(); }, 500);
         this.spawnTimer = new Timer(1000);
@@ -35,17 +37,21 @@ export class GameManager extends Observer {
         this.score += 2;
         this.updateScore();
 
-        if (this.progress % 5 == 0)
+        if (this.progress % 5 == 0 && !this.isBossFight)
             this.spawnEnemy("base");
 
-        if (this.progress > 20) {
+        if (this.progress > 20 && !this.isBossFight) {
             if (this.progress % 15 == 0)
                 this.spawnEnemy("strong");
         }
 
-        if (this.progress > 50) {
+        if (this.progress > 50 && !this.isBossFight) {
             if (this.progress % 35 == 0)
                 this.spawnEnemy("star");
+        }
+
+        if (this.progress % 5 == 0 && !this.isBossFight) {
+            this.startBossFight();
         }
 
         if (Math.random() * 1000 < 10) {
@@ -53,6 +59,23 @@ export class GameManager extends Observer {
 
             this.spawnPlanet()
         }
+    }
+
+    startBossFight() {
+        this.isBossFight = true;
+
+        let boss = new Boss();
+        boss.setupManagers(this, this.audioManager);
+        this.boss = boss;
+        this.gameScene.activateBossFight();
+        this.enemies.push(boss);
+    }
+
+    endBossFight() {
+        this.isBossFight = false;
+        //this.removeEnemy(boss);
+
+        this.boss = null;
     }
 
     spawnPlanet() {
@@ -160,8 +183,11 @@ export class GameManager extends Observer {
 
             //TODO: Ezt rendesen megcsinalni
            //if (Math.random() * 100 > (100-enemy.agression))
+            if(enemy.fireCooldown)
             if(enemy.fireCooldown.activate())
-                enemy.shoot();
+                    enemy.shoot();
+            
+          
             
             /*if (enemy.fireCooldown.activate()) {
                 enemy.shoot();
@@ -247,6 +273,15 @@ export class GameManager extends Observer {
         this.gameScene.setScore(this.score);
     }
 
+    updateBossHealth() {
+        this.gameScene.setBossHealth(this.boss);
+
+        if (!this.boss.isAlive) {
+            this.endBossFight();
+            this.gameScene.deactivateBossFight();
+        }
+    }
+
     update(delta) {
 
         this.updateControls(delta)
@@ -255,6 +290,10 @@ export class GameManager extends Observer {
         this.checkCollisionsEnemy();
         this.checkCollisionsPlayer();
         this.updatePlanets(delta);
+
+        if (this.isBossFight) {
+            this.updateBossHealth();
+        }
 
         if (this.isGameInProgress) {
             if (this.spawnTimer.activate())
@@ -278,6 +317,12 @@ export class GameManager extends Observer {
         this.enemies = [];
         this.planets = [];
         this.isGameInProgress = false;
+
+        if (this.isBossFight) {
+            this.endBossFight();
+            this.gameScene.deactivateBossFight();
+        }
+            
     }
 
     getPlayer() {
@@ -340,7 +385,9 @@ export class GameManager extends Observer {
 
     removeEnemy(enemy) {
         let index = this.enemies.indexOf(enemy);
-        //  console.log("enemy index: " + index)
+
+        
+         console.log("enemy index: " + index)
 
 
         if (this.enemies.length <= 1)
@@ -354,7 +401,12 @@ export class GameManager extends Observer {
     spawnBullet(owner, position) {
         if (owner == "player") {
             this.bullets.push(new Bullet(position.x, position.y, owner));
-        } else {
+
+        } else if (owner == "boss") {
+            this.enemyBullets.push(new Bullet(position.x, position.y, owner,45,25,1.7));
+            
+        }
+        else {
             // console.log("enemy bullet spawned")
             this.enemyBullets.push(new Bullet(position.x, position.y, owner));
 

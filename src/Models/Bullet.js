@@ -38,13 +38,15 @@ export class ProjectileBase extends Sprite {
 }
 
 export class Bullet extends ProjectileBase {
-    constructor(x, y, owner, speed = 35,damage = 10) {
+    constructor(x, y, owner, speed = 35,damage = 10, sizeMultiplier = 1) {
         let path = "/src/assets/sprites/projectile_e.png";
+
 
         if (owner == "player")
             path = "/src/assets/sprites/projectile.png";
 
-        super(path, x, y, 8 * 2.4, 8 * 2.4, speed, damage);
+        super(path, x, y, 8 * 2.4 * sizeMultiplier, 8 * 2.4 * sizeMultiplier, speed, damage);
+
         this.owner = owner;
         this.id = Date.now();
 
