@@ -153,6 +153,14 @@ export class EnemyBase extends GameObject {
     getIsAlive() {
         return this.isAlive;
     }
+
+    getPoints() {
+        return this.agression + 20;
+    }
+
+    getHitbox() {
+        return { xStart: this.position.getX(), yStart: this.position.getY(), width: this.width, height: this.height };
+    }
 }
 
 export class DefaultEnemy extends EnemyBase {

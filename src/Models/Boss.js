@@ -27,7 +27,7 @@ export class Boss extends GameObject {
 
         this.gunPositions = [new Vector2D(85, 285),new Vector2D(250, 310), new Vector2D(85, 350)];
 
-        this.addAnimation("hit", new EffectAnimation("/src/assets/sprites/enemy1-hit.png"));
+        this.addAnimation("hit", new EffectAnimation("/src/assets/sprites/boss_hit.png"));
     }
 
     setupManagers(gameManager, audioManager) {
@@ -110,6 +110,14 @@ export class Boss extends GameObject {
 
     getIsAlive() {
         return this.isAlive;
+    }
+
+    getPoints() {
+        return 500;
+    }
+
+    getHitbox() {
+        return { xStart: this.position.getX() + 250, yStart: this.position.getY() + 260, width: 200, height: 100 };
     }
 
 }

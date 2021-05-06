@@ -50,7 +50,7 @@ export class GameManager extends Observer {
                 this.spawnEnemy("star");
         }
 
-        if (this.progress % 5 == 0 && !this.isBossFight) {
+        if (this.progress % 50 == 0 && !this.isBossFight) {
             this.startBossFight();
         }
 
@@ -108,6 +108,7 @@ export class GameManager extends Observer {
         }
 
         this.player.addOnMove(() => this.gameScene.setHealthbarPosition(this.player.position));
+        //this.gameScene.setHealthbarPosition(this.player.position);
 
         this.player.setupManagers(this, this.audioManager);
 
@@ -228,8 +229,12 @@ export class GameManager extends Observer {
             for (let i = 0; i < this.getBullets().length; i++) {
                 let bullet = this.getBullets()[i];
 
-                if (bullet.position.getX() + bullet.width > enemy.position.getX() && bullet.position.getX() < enemy.position.getX() + enemy.width &&
-                    bullet.position.getY() + bullet.height > enemy.position.getY() && bullet.position.getY() < enemy.position.getY() + enemy.height) {
+                let hitbox = enemy.getHitbox();
+
+                let isCollided = bullet.position.getX() + bullet.width > hitbox.xStart && bullet.position.getX() < hitbox.xStart + hitbox.width &&
+                    bullet.position.getY() + bullet.height > hitbox.yStart && bullet.position.getY() < hitbox.yStart + hitbox.height;
+
+                if (isCollided) {
                     
                     if (bullet.type != "laser") {
                         bullet.destroy();
@@ -242,7 +247,7 @@ export class GameManager extends Observer {
             }
 
             if (!enemy.getIsAlive()) {
-                this.score += enemy.agression + 20;
+                this.score += enemy.getPoints() + 20;
                 this.updateScore();
             }
 
@@ -252,8 +257,7 @@ export class GameManager extends Observer {
             if (playerCollision) {
                 this.player.hit(100);
                 enemy.die();
-                
-                //console.log("Player collided");
+           
 
                 this.updateLives();
             }
@@ -308,7 +312,7 @@ export class GameManager extends Observer {
         this.progress = 0;
         this.gameScene.resetLives();
         this.score = 0;
-        // console.log("game started");
+        
     }
 
     endGame() {
@@ -347,7 +351,7 @@ export class GameManager extends Observer {
 
     removePlanet(planet) {
         let index = this.planets.indexOf(planet);
-        console.log("planet deleted");
+    
 
         if (this.planets.length <= 1)
             this.planets = [];
@@ -380,15 +384,10 @@ export class GameManager extends Observer {
 
         }
 
-        // console.log(bullet);
     }
 
     removeEnemy(enemy) {
         let index = this.enemies.indexOf(enemy);
-
-        
-         console.log("enemy index: " + index)
-
 
         if (this.enemies.length <= 1)
             this.enemies = [];
@@ -407,7 +406,7 @@ export class GameManager extends Observer {
             
         }
         else {
-            // console.log("enemy bullet spawned")
+          
             this.enemyBullets.push(new Bullet(position.x, position.y, owner));
 
         }

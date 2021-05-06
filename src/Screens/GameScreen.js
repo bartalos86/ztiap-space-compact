@@ -20,11 +20,11 @@ export class GameScreen extends BaseScreen {
         let playerNameText = new Text("player1", 120, 55, "35pt", "arcade");
         this.scoreText = new Text("Score: 100", 1100, 55, "35pt", "arcade");
 
-        this.healthWidget = new HealthWidget(50, "bottom", 46, 40);
+        this.healthWidget = new HealthWidget(35, 20, 46, 40);
        
-        this.healthBar = new Progressbar("/src/assets/ui/progress-fg-gr-tr.png", "/src/assets/ui/progress-bg-tr.png", "center", 0, 60, 4);
-        this.bossHealthBar = new Progressbar("/src/assets/ui/boss-bar.png", "/src/assets/ui/progress-bg-tr.png", "center", 660, 800, 20);
-        this.bossName = new Text("Ultimate  mega  destoroyer  boss", "center", 640, "25pt", "pixel");
+        this.healthBar = new Progressbar("/src/assets/ui/progress-fg-gr-tr.png", "/src/assets/ui/progress-bg-tr.png", "center", -50, 60, 4);
+        this.bossHealthBar = new Progressbar("/src/assets/ui/boss-bar.png", "/src/assets/ui/progress-bg-tr.png", "center", 670, 800, 20);
+        this.bossName = new Text("Ultimate  mega  destoroyer  boss", "center", 655, "23pt", "pixel");
 
         let explosion = new AnimatedImageWidget("/src/assets/sprites/explosion.png", 100, 100, 100, 100, new Animation2D(100, 100, 10, 0.3*16, 6));
 
@@ -44,7 +44,7 @@ export class GameScreen extends BaseScreen {
 
         this.addSubject(backButton);
 
-        this.widgets = [hudBg, playerNameText, this.scoreText, this.healthWidget, this.healthBar];
+        this.widgets = [hudBg, this.scoreText, this.healthWidget, this.healthBar];
     }
 
     setScore(score) {
