@@ -24,7 +24,7 @@ export class GameScreen extends BaseScreen {
        
         this.healthBar = new Progressbar("/src/assets/ui/progress-fg-gr-tr.png", "/src/assets/ui/progress-bg-tr.png", "center", -50, 60, 4);
         this.bossHealthBar = new Progressbar("/src/assets/ui/boss-bar.png", "/src/assets/ui/progress-bg-tr.png", "center", 670, 800, 20);
-        this.bossName = new Text("Ultimate  mega  destoroyer  boss", "center", 655, "23pt", "pixel");
+        this.bossName = new Text("Ultimate  mega  destroyer  boss", "center", 655, "23pt", "pixel");
 
         let explosion = new AnimatedImageWidget("/src/assets/sprites/explosion.png", 100, 100, 100, 100, new Animation2D(100, 100, 10, 0.3*16, 6));
 

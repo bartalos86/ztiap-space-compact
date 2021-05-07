@@ -25,11 +25,12 @@ export class OnTimer extends Timer{
     }
 
     activate() {
+
         if (this.timeElapsed) {
             this.timeElapsed = false;
             setTimeout(() => this.timeElapsed = true, this.interval);
             this.isInProgress = true;
-            setInterval(() => this.isInProgress = false, this.onInterval);
+            setTimeout(() => this.isInProgress = false, this.onInterval);
             return true;
         }
 
@@ -39,7 +40,6 @@ export class OnTimer extends Timer{
 }
 
 
-//TODO: Ezt megcsinani
 export class BulletTimer extends Timer {
     constructor(interval, count) {
         super(interval);

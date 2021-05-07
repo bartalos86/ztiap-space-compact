@@ -54,7 +54,7 @@ export class GameManager extends Observer {
             this.startBossFight();
         }
 
-        if (Math.random() * 1000 < 10) {
+        if (Math.random() * 1000 < 5) {
           
 
             this.spawnPlanet()
@@ -182,20 +182,12 @@ export class GameManager extends Observer {
             let enemy = this.getEnemies()[i];
             enemy.move(delta);
 
-            //TODO: Ezt rendesen megcsinalni
-           //if (Math.random() * 100 > (100-enemy.agression))
+           
             if(enemy.fireCooldown)
             if(enemy.fireCooldown.activate())
                     enemy.shoot();
             
-          
-            
-            /*if (enemy.fireCooldown.activate()) {
-                enemy.shoot();
-            }*/
-
-
-
+ 
             if (!enemy.getIsAlive())
                 this.removeEnemy(enemy);
 
