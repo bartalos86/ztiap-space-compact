@@ -20,13 +20,15 @@ export class GameScreen extends BaseScreen {
         let playerNameText = new Text("player1", 120, 55, "35pt", "arcade");
         this.scoreText = new Text("Score: 100", 1100, 55, "35pt", "arcade");
 
+        this.abilityIndicator = new ImageWidget("/src/assets/ui/rocket.png", 220, 10, 36 * 0.8, 72 * 0.7);
+
         this.healthWidget = new HealthWidget(35, 20, 46, 40);
-       
+
         this.healthBar = new Progressbar("/src/assets/ui/progress-fg-gr-tr.png", "/src/assets/ui/progress-bg-tr.png", "center", -50, 60, 4);
         this.bossHealthBar = new Progressbar("/src/assets/ui/boss-bar.png", "/src/assets/ui/progress-bg-tr.png", "center", 670, 800, 20);
         this.bossName = new Text("Ultimate  mega  destroyer  boss", "center", 655, "23pt", "pixel");
 
-        let explosion = new AnimatedImageWidget("/src/assets/sprites/explosion.png", 100, 100, 100, 100, new Animation2D(100, 100, 10, 0.3*16, 6));
+        let explosion = new AnimatedImageWidget("/src/assets/sprites/explosion.png", 100, 100, 100, 100, new Animation2D(100, 100, 10, 0.3 * 16, 6));
 
         this.addOnActivated(() => {
             //  let name = prompt("Name: ");
@@ -44,7 +46,7 @@ export class GameScreen extends BaseScreen {
 
         this.addSubject(backButton);
 
-        this.widgets = [hudBg, this.scoreText, this.healthWidget, this.healthBar];
+        this.widgets = [hudBg, this.scoreText, this.healthWidget, this.healthBar, this.abilityIndicator];
     }
 
     setScore(score) {
@@ -58,8 +60,8 @@ export class GameScreen extends BaseScreen {
     }
 
     deactivateBossFight() {
-        this.widgets.splice(this.widgets.indexOf(this.bossHealthBar),1);
-        this.widgets.splice(this.widgets.indexOf(this.bossName),1);
+        this.widgets.splice(this.widgets.indexOf(this.bossHealthBar), 1);
+        this.widgets.splice(this.widgets.indexOf(this.bossName), 1);
     }
 
     setBossHealth(boss) {
@@ -72,7 +74,7 @@ export class GameScreen extends BaseScreen {
     }
 
     setHealthbarPosition(position) {
-        this.healthBar.setPosition(position.getX()+8,position.getY()-10);
+        this.healthBar.setPosition(position.getX() + 8, position.getY() - 10);
     }
 
     resetLives() {
@@ -91,6 +93,20 @@ export class GameScreen extends BaseScreen {
         }
 
         return this.healthWidget.getCurrentHealth();
+    }
+
+    setAbilityIndicator(state, type) {
+        let img;
+        if (type == "rocket")
+            img = "/src/assets/ui/rocket.png"
+        else
+            img = "/src/assets/ui/laser.png"
+        
+        if (state == true) {
+            this.abilityIndicator.setPath(img)// = new ImageWidget(img, 220, 10, 36 * 0.8, 72 * 0.7);
+        } else {
+            this.abilityIndicator.setPath("");
+        }
     }
 
 

@@ -104,7 +104,7 @@ export class SpaceCenterScreen extends BaseScreen {
         speed.setPercentage(this.shipInView.speed);
 
         let specialIcon = this.getWidgetById("special-icon");
-        specialIcon.setPath("/src/assets/sprites/rocket.png");
+        specialIcon.setPath(this.shipInView.specialIcon);
 
         
         let selectButton = this.getWidgetById("select-button");
@@ -147,7 +147,7 @@ export class SpaceCenterScreen extends BaseScreen {
     constructor() {
         this.ships = [
             {id: "fire" ,sprite: "/src/assets/sprites/spaceship-sprite.png", firepower: 75, speed: 50, specialIcon: "/src/assets/sprites/rocket.png", isSelected: true },
-            {id: "speed" ,sprite: "/src/assets/sprites/spaceship_speed-sprite.png", firepower: 55, speed: 80, specialIcon: "/src/assets/sprites/rocket.png", isSelected: false },
+            {id: "speed" ,sprite: "/src/assets/sprites/spaceship_speed-sprite.png", firepower: 55, speed: 80, specialIcon: "/src/assets/ui/laser_landscape.png", isSelected: false },
         ]
 
         this.prevShip = null;

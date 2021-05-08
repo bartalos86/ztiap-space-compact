@@ -114,6 +114,10 @@ export class SpaceshipBase extends GameObject {
             this.ability();
     }
 
+    getIsAbilityAvailable() {
+        return true;
+    }
+
 }
 
 export class FireSpaceship extends SpaceshipBase {
@@ -131,7 +135,7 @@ export class FireSpaceship extends SpaceshipBase {
 
         this.ability = () => this.shootRockets();
 
-        this.rocketTimer = new Timer(10000);
+        this.rocketTimer = new Timer(15000);
 
     }
 
@@ -146,6 +150,14 @@ export class FireSpaceship extends SpaceshipBase {
         }
 
             
+    }
+
+    addOnStateChangeCallback(func) {
+        this.rocketTimer.addOnStateChangeCallback(func);
+    }
+
+    getIsAbilityAvailable() {
+        return this.rocketTimer.getIsAvailable();
     }
 
 
@@ -164,7 +176,7 @@ export class SpeedSpaceship extends SpaceshipBase {
 
         this.gunPositions.push(new Vector2D(80, 80 / 2 - 8));
         this.addAnimation("hit", new EffectAnimation("/src/assets/sprites/spaceship_speed-sprite-hit.png"));
-        this.laserTimer = new OnTimer(10000,5000);
+        this.laserTimer = new OnTimer(15000,3000);
       
         this.ability = () => this.shootLaser();
     }
@@ -177,6 +189,14 @@ export class SpeedSpaceship extends SpaceshipBase {
             let calculated = { x: pos.getX() + gun.getX(), y: pos.getY() + gun.getY()+2 };
             this.gameManager.spawnLaser(calculated);
         }
+    }
+
+    addOnStateChangeCallback(func) {
+        this.laserTimer.addOnStateChangeCallback(func);
+    }
+
+    getIsAbilityAvailable() {
+        return this.laserTimer.getIsAvailable();
     }
 
 

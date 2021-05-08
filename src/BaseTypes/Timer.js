@@ -1,34 +1,47 @@
 export class Timer {
-    constructor(interval) {
+    constructor(interval, onStateChangeCallback = null) {
         this.timeElapsed = true;
         this.interval = interval;
+        this.onStateChangeCallback = onStateChangeCallback;
 
+    }
+
+    addOnStateChangeCallback(func) {
+        this.onStateChangeCallback = func;
     }
 
     activate() {
         if (this.timeElapsed) {
             this.timeElapsed = false;
-            setTimeout(() => this.timeElapsed = true, this.interval);
+            if (this.onStateChangeCallback) this.onStateChangeCallback(false);
+            setTimeout(() => { this.timeElapsed = true; if(this.onStateChangeCallback) this.onStateChangeCallback(true)}, this.interval);
             return true;
         }
 
         return false;
     }
+
+
+    getIsAvailable() {
+        return this.timeElapsed;
+    }
 }
 
 export class OnTimer extends Timer{
-    constructor(interval, onInterval) {
-        super(interval);
+    constructor(interval, onInterval, onStateChangeCallback = null) {
+        super(interval, onStateChangeCallback);
         this.onInterval = onInterval;
-        this.isInProgress = false;;
+        this.isInProgress = false;
        
     }
+
 
     activate() {
 
         if (this.timeElapsed) {
             this.timeElapsed = false;
-            setTimeout(() => this.timeElapsed = true, this.interval);
+            if (this.onStateChangeCallback) this.onStateChangeCallback(false);
+            setTimeout(() => { this.timeElapsed = true; if(this.onStateChangeCallback) this.onStateChangeCallback(true)}, this.interval);
             this.isInProgress = true;
             setTimeout(() => this.isInProgress = false, this.onInterval);
             return true;
@@ -36,6 +49,10 @@ export class OnTimer extends Timer{
 
        
         return this.isInProgress;
+    }
+
+    getIsAvailable() {
+        return this.timeElapsed;
     }
 }
 

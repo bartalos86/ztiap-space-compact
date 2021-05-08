@@ -41,21 +41,20 @@ export class GameManager extends Observer {
             this.spawnEnemy("base");
 
         if (this.progress > 20 && !this.isBossFight) {
-            if (this.progress % 15 == 0)
+            if (this.progress % 5 == 0)
                 this.spawnEnemy("strong");
         }
 
         if (this.progress > 50 && !this.isBossFight) {
-            if (this.progress % 35 == 0)
+            if (this.progress % 20 == 0)
                 this.spawnEnemy("star");
         }
 
-        if (this.progress % 50 == 0 && !this.isBossFight) {
+        if (this.progress % 300 == 0 && !this.isBossFight) {
             this.startBossFight();
         }
 
-        if (Math.random() * 1000 < 5) {
-          
+        if (Math.random() * 1000 < 25 && this.planets.length < 1) {
 
             this.spawnPlanet()
         }
@@ -79,7 +78,7 @@ export class GameManager extends Observer {
     }
 
     spawnPlanet() {
-        let size = Math.random() * 150 + 150; 
+        let size = Math.random() * 150 + 150;
         this.planets.push(new Planet(size));
     }
 
@@ -92,9 +91,9 @@ export class GameManager extends Observer {
             case "star": enemy = new StarEnemy(); break;
         }
 
-        enemy.setAgression(this.progress / 15);
+        enemy.setAgression(this.progress / 10);
 
-        
+
         enemy.setupManagers(this, this.audioManager)
         this.enemies.push(enemy);
     }
@@ -108,6 +107,12 @@ export class GameManager extends Observer {
         }
 
         this.player.addOnMove(() => this.gameScene.setHealthbarPosition(this.player.position));
+        let abilityType = this.player instanceof SpeedSpaceship ? "laser" : "rocket";
+
+        this.player.addOnStateChangeCallback((state) => {
+            this.gameScene.setAbilityIndicator(state, abilityType);
+
+        });
         //this.gameScene.setHealthbarPosition(this.player.position);
 
         this.player.setupManagers(this, this.audioManager);
@@ -149,7 +154,7 @@ export class GameManager extends Observer {
 
             if (!planet.isAlive) {
                 this.removePlanet(planet);
-                
+
             }
 
             planet.move(delta);
@@ -182,12 +187,12 @@ export class GameManager extends Observer {
             let enemy = this.getEnemies()[i];
             enemy.move(delta);
 
-           
-            if(enemy.fireCooldown)
-            if(enemy.fireCooldown.activate())
+
+            if (enemy.fireCooldown)
+                if (enemy.fireCooldown.activate())
                     enemy.shoot();
-            
- 
+
+
             if (!enemy.getIsAlive())
                 this.removeEnemy(enemy);
 
@@ -202,7 +207,7 @@ export class GameManager extends Observer {
 
 
             if (playerCollision) {
-               
+
                 this.player.hit(bullet.getDamage() * 2.5);
                 this.updateLives();
                 bullet.destroy();
@@ -227,12 +232,12 @@ export class GameManager extends Observer {
                     bullet.position.getY() + bullet.height > hitbox.yStart && bullet.position.getY() < hitbox.yStart + hitbox.height;
 
                 if (isCollided) {
-                    
+
                     if (bullet.type != "laser") {
                         bullet.destroy();
                         this.removeBullet(bullet);
                     }
-                  
+
 
                     enemy.hit(bullet.getDamage());
                 }
@@ -249,7 +254,7 @@ export class GameManager extends Observer {
             if (playerCollision) {
                 this.player.hit(100);
                 enemy.die();
-           
+
 
                 this.updateLives();
             }
@@ -261,7 +266,7 @@ export class GameManager extends Observer {
         if (!this.player.isAlive) {
             this.gameScene.decreaseLife();
             this.player.revive();
-           
+
         }
     }
 
@@ -295,7 +300,12 @@ export class GameManager extends Observer {
             if (this.spawnTimer.activate())
                 this.processGameTime();
         }
+
         this.gameScene.setHealth(this.player.getHealth());
+
+
+      
+
 
     }
 
@@ -304,7 +314,9 @@ export class GameManager extends Observer {
         this.progress = 0;
         this.gameScene.resetLives();
         this.score = 0;
-        
+        let abilityType = this.player instanceof SpeedSpaceship ? "laser" : "rocket";
+        this.gameScene.setAbilityIndicator(true, abilityType);
+
     }
 
     endGame() {
@@ -318,7 +330,7 @@ export class GameManager extends Observer {
             this.endBossFight();
             this.gameScene.deactivateBossFight();
         }
-            
+
     }
 
     getPlayer() {
@@ -343,14 +355,14 @@ export class GameManager extends Observer {
 
     removePlanet(planet) {
         let index = this.planets.indexOf(planet);
-    
+
 
         if (this.planets.length <= 1)
             this.planets = [];
         else
-        this.planets.splice(index, 1);
+            this.planets.splice(index, 1);
 
-        
+
     }
 
     removeBullet(bullet) {
@@ -368,8 +380,8 @@ export class GameManager extends Observer {
                 this.enemyBullets = [];
 
         } else {
-           this.bullets.splice(index, 1);
-            
+            this.bullets.splice(index, 1);
+
 
             if (this.bullets.length < 1)
                 this.bullets = [];
@@ -394,11 +406,11 @@ export class GameManager extends Observer {
             this.bullets.push(new Bullet(position.x, position.y, owner));
 
         } else if (owner == "boss") {
-            this.enemyBullets.push(new Bullet(position.x, position.y, owner,45,25,1.7));
-            
+            this.enemyBullets.push(new Bullet(position.x, position.y, owner, 45, 25, 1.7));
+
         }
         else {
-          
+
             this.enemyBullets.push(new Bullet(position.x, position.y, owner));
 
         }
