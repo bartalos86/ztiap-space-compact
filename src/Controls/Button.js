@@ -114,7 +114,7 @@ export class ToggleButton extends Button {
     constructor(posX, posY, width, height, content, contentToggled) {
         super(posX, posY, width, height, "/src/assets/ui/button.png", content);
         this.addOnClick(() => this.toggle());
-        //  this.addOnClick(() => console.log("clicked"));
+       
         this.toggled = false;
         this.baseContent = content;
         this.toggledContent = contentToggled;

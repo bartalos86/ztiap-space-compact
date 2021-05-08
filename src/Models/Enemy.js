@@ -52,7 +52,7 @@ export class EnemyBase extends GameObject {
         this.agression = Math.random() * agression/2 + agression/2;
         this.level = Math.round(this.agressionDelta / 10);
 
-        console.log("agression: " + this.agression + " max: " + agression);
+        //console.log("agression: " + this.agression + " max: " + agression);
         this.speed = (this.agression + 5);
 
         if (this.speed > 45)
@@ -102,11 +102,13 @@ export class EnemyBase extends GameObject {
     }
 
     die() {
-        if (this.audioManager)
-            this.audioManager.playEffect("explosion");
+       
         //this.isAlive = false;
 
         this.playAnimation("explode");
+
+        if (this.audioManager)
+        this.audioManager.playEffect("explosion");
     }
 
     shoot() {

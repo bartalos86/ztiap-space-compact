@@ -71,6 +71,9 @@ export class SpaceshipBase extends GameObject {
             this.die();
         }
         this.playAnimation("hit");
+       
+        if (this.audioManager)
+            this.audioManager.playEffect("shot");
     }
 
     die() {
@@ -78,7 +81,6 @@ export class SpaceshipBase extends GameObject {
             this.audioManager.playEffect("explosion");
         
         this.isAlive = false;
-        console.log("Died");
     }
     
     revive() {

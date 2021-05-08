@@ -164,8 +164,7 @@ class Display {
 
     async drawProgressbar(widget) {
         this.positionHelper.normalizeWidgetPositions(widget);
-        // console.log(widget.getProgressWidth());
-
+        
         this.ctx.drawImage(widget.getBackDrawable(), widget.posX, widget.posY, widget.width, widget.height);
         this.ctx.drawImage(widget.getProgressDrawable(), widget.posX, widget.posY, widget.getProgressWidth(), widget.height);
 
@@ -173,7 +172,7 @@ class Display {
 
     async drawHealth(widget) {
         this.positionHelper.normalizeWidgetPositions(widget);
-        //console.log(widget);
+        
         let prevPos = widget.posX;
         for (let i = 0; i < widget.getCurrentHealth(); i++){
             
@@ -220,8 +219,7 @@ class Display {
                 gameObj.width, gameObj.height);
         }
 
-        /*this.ctx.font = "60pt arcade";
-        this.printText("Space compact", this.width / 2, 80);*/
+     
 
     }
     async renderBackground(offsetX, background = "/src/assets/background/bg.svg") {

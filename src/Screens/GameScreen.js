@@ -34,7 +34,7 @@ export class GameScreen extends BaseScreen {
             //  let name = prompt("Name: ");
             // playerNameText.text = name;
 
-            sceneManager.getAudioManager().playMusic("background-1");
+            sceneManager.getAudioManager().playMusic("background-2");
             sceneManager.getGameManager().startGame();
         });
         this.addOnDeactivated(() => { sceneManager.getAudioManager().stopMusic(); sceneManager.getGameManager().endGame(); });
@@ -66,7 +66,6 @@ export class GameScreen extends BaseScreen {
 
     setBossHealth(boss) {
         this.bossHealthBar.setPercentage((boss.getHealth() / boss.getMaxHealth()) * 100);
-        console.log("health: " + (boss.getHealth() / boss.getMaxHealth()) * 100);
     }
 
     setHealth(health) {

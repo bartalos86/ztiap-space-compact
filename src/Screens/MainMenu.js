@@ -10,7 +10,8 @@ import { Animation2D } from "../BaseTypes/Animation.js";
 export class MainMenu extends BaseScreen {
 
     constructor(sceneManager) {
-        super("main-menu","Main menu", "/src/assets/background/bg3.svg");
+        super("main-menu", "Main menu", "/src/assets/background/bg3.svg");
+        //sceneManager.getAudioManager().playMusic("background-1");
 
         let title = new TextWithShadow("Space compact", "center", 320, "60pt","arcade");
         let earthAnimation = new Animation2D(100, 100, 160, 0.25*16);

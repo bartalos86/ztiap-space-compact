@@ -58,7 +58,6 @@ export class ScoreboardScreen extends BaseScreen {
 
         this.highscores.push(scoreObj);
         this.scoreData.push({ name, date, score })
-        //console.log("score added");
         this.updateHSComponents();
     }
 
@@ -70,8 +69,6 @@ export class ScoreboardScreen extends BaseScreen {
 
     loadScores() {
         let highscores = JSON.parse(window.localStorage.getItem("highscores"));
-        console.log(highscores)
-        // console.log(highscores.length)
         if (highscores) {
 
             for (let i = 0; i < highscores.length; i++)
@@ -84,7 +81,7 @@ export class ScoreboardScreen extends BaseScreen {
         this.highscores = this.highscores.sort((score, prev) => prev.score - score.score);
 
         this.highscores = this.highscores.map((score, index) => { score.setY(300 + index * 60); return score; });
-        // console.log(this.highscores);
+      
 
         //Removes the text elements
         for (let i = 0; i < this.highscores.length; i++) {
@@ -94,8 +91,6 @@ export class ScoreboardScreen extends BaseScreen {
             this.removeWidget(components[1]);
             this.removeWidget(components[2]);
         }
-
-        //console.log(this.highscores);
 
         let numOfScores = 6;
         if (this.highscores.length < 6)

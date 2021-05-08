@@ -35,9 +35,7 @@ export class AudioManager{
             return;
 
             this.effects[effectId].play();
-            //this.effects[effectId].play();
-
-        //new Promise(() => this.effects[effectId].play());
+        
     }
 
     playMusic(musicId) {

@@ -10,7 +10,7 @@ export class Audio {
         }
         sound.style.display = "none";
 
-        sound.volume = 0.2;
+        sound.volume = 0.15;
 
         this.sound = sound;
         document.body.appendChild(sound);

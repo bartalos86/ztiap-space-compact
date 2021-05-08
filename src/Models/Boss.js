@@ -44,7 +44,7 @@ export class Boss extends GameObject {
             
      
             if (this.audioManager)
-                this.audioManager.playEffect("shoot");
+                this.audioManager.playEffect("boss-attack");
 
             for (let i = 0; i < this.gunPositions.length; i++) {
                 let gun = this.gunPositions[i];
@@ -73,7 +73,7 @@ export class Boss extends GameObject {
 
     die() {
         if (this.audioManager)
-            this.audioManager.playEffect("explosion");
+            this.audioManager.playEffect("boss-defeat");
 
         //this.playAnimation("explode");
         this.destroy();
