@@ -40,8 +40,8 @@ export class GameManager extends Observer {
         if (this.progress % 5 == 0 && !this.isBossFight)
             this.spawnEnemy("base");
 
-        if (this.progress > 20 && !this.isBossFight) {
-            if (this.progress % 5 == 0)
+        if (this.progress > 25 && !this.isBossFight) {
+            if (this.progress % 10 == 0)
                 this.spawnEnemy("strong");
         }
 
@@ -50,11 +50,11 @@ export class GameManager extends Observer {
                 this.spawnEnemy("star");
         }
 
-        if (this.progress % 45 == 0 && !this.isBossFight) {
+        if (this.progress % 350 == 0 && !this.isBossFight) {
             this.startBossFight();
         }
 
-        if (Math.random() * 1000 < 50 && this.planets.length < 1) {
+        if (Math.random() * 1000 < 35 && this.planets.length < 1) {
 
             this.spawnPlanet()
         }
