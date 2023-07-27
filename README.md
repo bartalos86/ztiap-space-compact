@@ -5,6 +5,7 @@ player progresses through the game.
 The game also features multiple spaceships each with its own speacial ability.
 
 ## Design
+<img src="/showcase/game.gif" />
 
 ### Game menu
 <img src="/showcase/menu.png" />
