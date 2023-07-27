@@ -4,9 +4,20 @@ amazing pixel art, sounds, a score system, bossfights and many more. The game's 
 player progresses through the game.
 The game also features multiple spaceships each with its own speacial ability.
 
-## Design
-<img src="/showcase/game.gif" />
+## Technical details
+The whole project is built on OOP principles. OOP was used everywhere where it was practical that way the game is
+easy to extend with additional features. UI elements and Game elements are separeted into their corresponding folder.
+Each scene in the game including the menu is separated into its own class which contains the information about the scene, with all its UI elements and resources.
 
+### Libraries used
+- None
+
+### Used design patters
+The game was built using the following design patters to ensure the maintainability and the quality of the code:
+- Observer
+- MVC
+
+## Design
 ### Game menu
 <img src="/showcase/menu.png" />
 
@@ -22,19 +33,6 @@ The game also features multiple spaceships each with its own speacial ability.
 ### Boss fight
 <img src="/showcase/bossfight.png" />
 <img src="/showcase/bossfight-2.png" />
-
-## Technical details
-The whole project is built on OOP principles. OOP was used everywhere where it was practical that way the game is
-easy to extend with additional features. UI elements and Game elements are separeted into their corresponding folder.
-Each scene in the game including the menu is separated into its own class which contains the information about the scene, with all its UI elements and resources.
-
-### Libraries used
-- None
-
-### Used design patters
-The game was built using the following design patters to ensure the maintainability and the quality of the code:
-- Observer
-- MVC
 
 
 
