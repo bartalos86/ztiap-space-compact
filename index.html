@@ -5,10 +5,17 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Space compact - BM</title>
+
+    <link rel="shortcut icon" href="src/assets/favicon.png" type="image/png">
     <style>
         @font-face {
             font-family: 'pixel';
+            src: url('/src/assets/fonts/PIXEARG.ttf');
+        } 
+
+        @font-face {
+            font-family: 'arcade';
             src: url('src/assets/fonts/arcade.ttf');
         }
 
@@ -16,32 +23,33 @@
             margin: 0;
             padding: 0;
             font-family: "pixel" !important;
+            background-size: 100px;
+            background: rgb(7, 18, 39);
+
         }
 
         canvas {
             image-rendering: pixelated;
-             /* image-rendering: optimizeSpeed; */
-            /* image-rendering: crisp-edges; */
-           /* image-rendering: -moz-crisp-edges;
-            image-rendering: -o-crisp-edges;
-            image-rendering: -webkit-optimize-contrast;
-            -ms-interpolation-mode: nearest-neighbor;/*
-            margin: 0;
-            padding: 0;
-            border: solid black 1px;
-            font-family: "pixel";
-
+            margin: auto;
+            position: absolute;
+            left: 50%;
+            top: 10%;
+            transform: translateX(-50%);
+            border-radius: 10px;
+            box-shadow: rgba(0, 0, 0, 0.315) 0px 0px 30px;
         }
 
         img {
             display: none;
         }
     </style>
+
+    <script type="module" src="/src/main.js" defer></script>
+   
 </head>
 
 <body>
     <canvas id="canvas"></canvas>
-    <script type="module" src="/src/main.js" defer></script>
 </body>
 
 </html>
